@@ -3,7 +3,8 @@ CREATE TABLE Usuario(
 	pnome varchar(50),
 	unome varchar(50),
 	email varchar(100),
-	senha varchar(100)
+	senha varchar(100),
+	status varchar(20)
 );
 CREATE TABLE Bolsista(
 	cpf char(11) PRIMARY KEY,
@@ -12,7 +13,9 @@ CREATE TABLE Bolsista(
 	email varchar(100),
 	senha varchar(100),
 	id_bolsista serial not null,
-	curso varchar(50)
+	curso varchar(50),
+	status varchar(20),
+	FOREIGN KEY (cpf) REFERENCES Usuario (cpf) ON DELETE CASCADE
 	
 );
 CREATE TABLE Servidor(
@@ -22,18 +25,11 @@ CREATE TABLE Servidor(
 	email varchar(100),
 	senha varchar(100),
 	id_servidor serial not null,
-	funcao varchar(50)
-	
+	funcao varchar(50),
+	status varchar(20),
+	FOREIGN KEY (cpf) REFERENCES Usuario (cpf) ON DELETE CASCADE
 );
-CREATE TABLE Responsavel(
-	cpf char(11) PRIMARY KEY,
-	pnome varchar(50),
-	unome varchar(50),
-	email varchar(100),
-	senha varchar(100),
-	id_responsavel serial not null
-	
-);
+
 CREATE TABLE Bloco(
 	id_bloco serial not null PRIMARY KEY,
 	nome varchar(100),
@@ -50,9 +46,9 @@ CREATE TABLE Quadra(
 );
 CREATE TABLE Agendamento(
 	id_agendamento serial not null PRIMARY KEY,
-	horario_inicio time,
-	horario_fim time,
-	data date,
+	horario_inicio varchar(8),
+	horario_fim varchar(8),
+	data varchar(10),
 	status varchar(50),
 	cpf char(11),
 	id_quadra int,
@@ -63,29 +59,19 @@ CREATE TABLE Agendamento(
 );
 CREATE TABLE Evento(
 	id_evento serial not null PRIMARY KEY,
-	data date,
-	horario_inicio time,
-	horario_fim time,
+	data varchar(10),
+	horario_inicio varchar(8),
+	horario_fim varchar(8),
 	status varchar(50),
 	nome varchar(100),
 	cpf char(11),
-	FOREIGN KEY (cpf) REFERENCES Usuario (cpf) match simple
+	FOREIGN KEY (cpf) REFERENCES Servidor (cpf) match simple
 	on update cascade on delete set null
 );
 CREATE TABLE Equipamento(
 	id_equipamento serial not null PRIMARY KEY,
 	tipo varchar(50),
 	descricao varchar(100)
-);
-CREATE TABLE Reserva(
-	id_reserva serial not null PRIMARY KEY,
-	id_agendamento int,
-	id_equipamento int,
-	quantidade_equip int,
-	FOREIGN KEY (id_agendamento) REFERENCES Agendamento (id_agendamento) match simple
-	on update cascade on delete set null,
-	FOREIGN KEY (id_equipamento) REFERENCES Equipamento (id_equipamento) match simple
-	on update cascade on delete set null
 );
 CREATE TABLE QuadraEvento(
 	id_evento int,
@@ -133,37 +119,6 @@ CREATE SEQUENCE reserva_id_seq;
 
 SELECT setval('reserva_id_seq', COALESCE((SELECT MAX(id_reserva) FROM Reserva), 0) + 1, false);
 
-ALTER TABLE Agendamento
-ALTER COLUMN horario_inicio TYPE varchar(8),
-ALTER COLUMN horario_fim TYPE varchar(8),
-ALTER COLUMN data TYPE varchar(10);
-
-ALTER TABLE Evento
-ALTER COLUMN horario_inicio TYPE varchar(8),
-ALTER COLUMN horario_fim TYPE varchar(8),
-ALTER COLUMN data TYPE varchar(10);
-
 ALTER TABLE QuadraEvento
 ADD CONSTRAINT UQ_QuadraEvento UNIQUE (id_evento, id_quadra);
 
-ALTER TABLE Usuario
-ADD COLUMN status varchar(50);
-
-ALTER TABLE Bolsista
-ADD COLUMN status varchar(50);
-
-
-ALTER TABLE Servidor
-ADD COLUMN status varchar(50);
-
-ALTER TABLE Responsavel
-ADD COLUMN status varchar(50);
-
-
-select * from Bolsista
-select * from Usuario
-
-delete from Usuario where cpf = '71992758972'
-
-insert into Usuario values('71992758972', 'Fulano', 'Silva', 'fulano@example.com', 'senha12')
-insert into Bolsista values('71992758972', 'Fulano', 'Silva', 'fulano@example.com', 'senha12', 1, 'abc')

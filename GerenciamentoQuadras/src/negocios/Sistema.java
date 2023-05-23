@@ -14,7 +14,6 @@ public class Sistema {
 	private static UsuarioDAO usuarioDAO = null;
 	private static BolsistaDAO bolsistaDAO = null;
 	private static ServidorDAO servidorDAO = null;
-	private static ResponsavelDAO responsavelDAO = null;
 	private static BlocoDAO blocoDAO = null;
 	private static QuadraDAO quadraDAO = null;
 	private static AgendamentoDAO agendamentoDAO = null;
@@ -38,7 +37,6 @@ public class Sistema {
 		usuarioDAO = UsuarioDAO.getInstance();
 		bolsistaDAO = BolsistaDAO.getInstance();
 		servidorDAO = ServidorDAO.getInstance();
-		responsavelDAO = ResponsavelDAO.getInstance();
 		blocoDAO = BlocoDAO.getInstance();
 		quadraDAO = QuadraDAO.getInstance();
 		agendamentoDAO = AgendamentoDAO.getInstance();
@@ -98,24 +96,6 @@ public class Sistema {
 	}
 	public List<Servidor> buscaServidores() throws SelectException{
 		return servidorDAO.selectAll();
-	}
-	//----------------------------Responsavel----------------------------//
-	public void insereResponsavel(Responsavel responsavel) throws SelectException, InsertException, UpdateException {
-		responsavelDAO.insert(responsavel);
-	}
-	public void deletaResponsavel(Responsavel responsavel) throws DeleteException {
-		responsavelDAO.delete(responsavel);
-	}
-	public void atualizaResponsavel(Responsavel responsavel) throws UpdateException {
-		responsavelDAO.update(responsavel);
-		usuarioDAO.update(responsavel);
-	}
-	public Responsavel buscaResponsavel(String cpf) throws SelectException {
-		return responsavelDAO.select(cpf);
-		
-	}
-	public List<Responsavel> buscaResponsaveis() throws SelectException{
-		return responsavelDAO.selectAll();
 	}
 	//----------------------------Bloco----------------------------//
 	public void insereBloco(Bloco bloco) throws SelectException, InsertException{

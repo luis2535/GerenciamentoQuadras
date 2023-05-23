@@ -13,12 +13,12 @@ public class Evento {
 	private String horario_fim;
 	private String status;
 	private String nome;
-	private Responsavel usuario;
+	private Servidor usuario;
 	private List<Quadra> quadras;
 	
 	public Evento() {}
 
-	public Evento(int id_evento, String data, String horario_inicio, String horario_fim, String status, String nome, Responsavel usuario, List <Quadra> quadras) {
+	public Evento(int id_evento, String data, String horario_inicio, String horario_fim, String status, String nome, Servidor usuario, List <Quadra> quadras) {
 		this.id_evento = id_evento;
 		this.data = data;
 		this.horario_inicio = horario_inicio;
@@ -78,11 +78,11 @@ public class Evento {
 	}
 
 
-	public Responsavel getResponsavel() {
+	public Servidor getServidor() {
 		return usuario;
 	}
 
-	public void setResponsavel(Responsavel usuario) {
+	public void setServidor(Servidor usuario) {
 		this.usuario = usuario;
 	}
 

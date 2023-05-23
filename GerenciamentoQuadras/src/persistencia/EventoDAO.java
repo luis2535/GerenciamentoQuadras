@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dados.Evento;
-import dados.Responsavel;
+import dados.Servidor;
 import dados.Quadra;
 import excecoes.DeleteException;
 import excecoes.InsertException;
@@ -17,7 +17,7 @@ import excecoes.UpdateException;
 
 public class EventoDAO {
 	private static EventoDAO instance = null;
-	private static ResponsavelDAO responsavelDAO = null;
+	private static ServidorDAO servidorDAO = null;
 	private static QuadraDAO quadraDAO = null;
 	
 	private PreparedStatement selectNewId;
@@ -49,7 +49,7 @@ public class EventoDAO {
     	insertQuadraEvento = conexao.prepareStatement("insert into QuadraEvento values (?, ?);");
     	deleteQuadraEvento = conexao.prepareStatement("delete from QuadraEvento where id_evento = ? and id_quadra = ?;");
     	
-    	responsavelDAO = ResponsavelDAO.getInstance();
+    	servidorDAO = ServidorDAO.getInstance();
     	quadraDAO = QuadraDAO.getInstance();
     }
     private int selectNewId() throws SelectException {
@@ -74,7 +74,7 @@ public class EventoDAO {
             insert.setString(4, evento.getHorario_fim());
             insert.setString(5, evento.getStatus());
             insert.setString(6, evento.getNome());
-            insert.setString(7, evento.getResponsavel().getCpf());
+            insert.setString(7, evento.getServidor().getCpf());
             // Executa o comando de inserção
             insert.executeUpdate();
             
@@ -100,7 +100,7 @@ public class EventoDAO {
             update.setString(3, evento.getHorario_fim());
             update.setString(4, evento.getStatus());
             update.setString(5, evento.getNome());
-            update.setString(6, evento.getResponsavel().getCpf());
+            update.setString(6, evento.getServidor().getCpf());
             update.setInt(7, evento.getId_evento());
             update.executeUpdate();
         } catch (SQLException e) {
@@ -142,10 +142,10 @@ public class EventoDAO {
 			  String nome = rs.getString(6);
 			  String cpf = rs.getString(7);
 			 
-			  Responsavel responsavel = responsavelDAO.select(cpf);
+			  Servidor servidor = servidorDAO.select(cpf);
 			  List<Quadra> quadras = this.selectQuadraEvento(id_evento);
 			 
-			  return new Evento(id_evento, data, horario_inicio, horario_fim, status, nome, responsavel, quadras);
+			  return new Evento(id_evento, data, horario_inicio, horario_fim, status, nome, servidor, quadras);
 		  }
 		  
 	  }catch (SQLException e) {
@@ -169,9 +169,9 @@ public class EventoDAO {
 			  String nome = rs.getString(6);
 			  String cpf = rs.getString(7);
 			  
-			  Responsavel responsavel = responsavelDAO.select(cpf);
+			  Servidor servidor = servidorDAO.select(cpf);
 			  List<Quadra> quadras = this.selectQuadraEvento(id_evento);
-			  lista.add(new Evento(id_evento, data, horario_inicio, horario_fim, status, nome, responsavel, quadras));
+			  lista.add(new Evento(id_evento, data, horario_inicio, horario_fim, status, nome, servidor, quadras));
 		  }
 	  }catch (SQLException e) {
 		  throw new SelectException("Evento");
