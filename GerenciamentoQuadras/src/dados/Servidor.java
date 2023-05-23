@@ -11,11 +11,11 @@ public class Servidor extends Usuario{
 		this.id_servidor = id_servidor;
 		this.funcao = funcao;
 	}
-	public Servidor(String cpf, String pnome, String unome, String email, String senha) {
-		super(cpf, pnome, unome, email, senha);
+	public Servidor(String cpf, String pnome, String unome, String email, String senha, String status) {
+		super(cpf, pnome, unome, email, senha, status);
 	}
-	public Servidor(String cpf, String pnome, String unome, String email, String senha, int id_servidor, String funcao) {
-		super(cpf, pnome, unome, email, senha);
+	public Servidor(String cpf, String pnome, String unome, String email, String senha, String status, int id_servidor, String funcao) {
+		super(cpf, pnome, unome, email, senha, status);
 		this.id_servidor = id_servidor;
 		this.funcao = funcao;
 	}

@@ -8,12 +8,12 @@ public class Responsavel extends Usuario {
 	public Responsavel(int id_responsavel) {
 		this.id_responsavel = id_responsavel;
 	}
-	public Responsavel(String cpf, String pnome, String unome, String email, String senha) {
-		super(cpf, pnome, unome, email, senha);
+	public Responsavel(String cpf, String pnome, String unome, String email, String senha, String status) {
+		super(cpf, pnome, unome, email, senha, status);
 	}
 	
-	public Responsavel(String cpf, String pnome, String unome, String email, String senha, int id_responsavel) {
-		super(cpf, pnome, unome, email, senha);
+	public Responsavel(String cpf, String pnome, String unome, String email, String senha,  String status, int id_responsavel) {
+		super(cpf, pnome, unome, email, senha, status);
 		this.id_responsavel = id_responsavel;
 	}
 

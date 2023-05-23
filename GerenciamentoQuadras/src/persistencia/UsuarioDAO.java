@@ -30,9 +30,9 @@ public class UsuarioDAO {
     private UsuarioDAO() throws ClassNotFoundException, SQLException {
         Connection conexao = Conexao.getConexao();
 
-        insert = conexao.prepareStatement("insert into Usuario values (?,?,?,?,?);");
+        insert = conexao.prepareStatement("insert into Usuario values (?,?,?,?,?,?);");
         delete = conexao.prepareStatement("delete from Usuario where cpf = ?;");
-        update = conexao.prepareStatement("update Usuario set pnome = ?, unome = ?, email = ?, senha = ? where cpf = ?;");
+        update = conexao.prepareStatement("update Usuario set pnome = ?, unome = ?, email = ?, senha = ?, status = ? where cpf = ?;");
         select = conexao.prepareStatement("select * from Usuario where cpf = ?;");
         selectAll = conexao.prepareStatement("select * from Usuario;");
     }
@@ -45,6 +45,7 @@ public class UsuarioDAO {
             insert.setString(3, usuario.getUnome());
             insert.setString(4, usuario.getEmail());
             insert.setString(5, usuario.getSenha());
+            insert.setString(6, usuario.getStatus());
             insert.executeUpdate();
         } catch (SQLException e) {
             throw new InsertException("Usuario");
@@ -68,7 +69,8 @@ public class UsuarioDAO {
         	update.setString(2, usuario.getUnome());
         	update.setString(3, usuario.getEmail());
         	update.setString(4, usuario.getSenha());
-        	update.setString(5, usuario.getCpf());
+        	update.setString(5, usuario.getStatus());
+        	update.setString(6, usuario.getCpf());
             update.executeUpdate();
         } catch (SQLException e) {
             throw new UpdateException("Usuario");
@@ -87,10 +89,11 @@ public class UsuarioDAO {
                 String unome = rs.getString(3);
                 String email = rs.getString(4);
                 String senha = rs.getString(5);
+                String status = rs.getString(6);
                 
                 
 
-                return new Usuario(cpf, pnome, unome, email, senha);
+                return new Usuario(cpf, pnome, unome, email, senha, status);
             }
 
         } catch (SQLException e) {
@@ -114,9 +117,10 @@ public class UsuarioDAO {
                 String unome = rs.getString(3);
                 String email = rs.getString(4);
                 String senha = rs.getString(5);
+                String status = rs.getString(6);
                 
 
-                lista.add(new Usuario(cpf, pnome, unome, email, senha));
+                lista.add(new Usuario(cpf, pnome, unome, email, senha, status));
             }
         } catch (SQLException e) {
             throw new SelectException("Usuario");

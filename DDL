@@ -146,6 +146,20 @@ ALTER COLUMN data TYPE varchar(10);
 ALTER TABLE QuadraEvento
 ADD CONSTRAINT UQ_QuadraEvento UNIQUE (id_evento, id_quadra);
 
+ALTER TABLE Usuario
+ADD COLUMN status varchar(50);
+
+ALTER TABLE Bolsista
+ADD COLUMN status varchar(50);
+
+
+ALTER TABLE Servidor
+ADD COLUMN status varchar(50);
+
+ALTER TABLE Responsavel
+ADD COLUMN status varchar(50);
+
+
 select * from Bolsista
 select * from Usuario
 

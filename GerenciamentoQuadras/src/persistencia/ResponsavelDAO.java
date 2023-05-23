@@ -36,10 +36,10 @@ public class ResponsavelDAO {
         Connection conexao = Conexao.getConexao();
         
         selectNewId = conexao.prepareStatement("SELECT nextval('responsavel_id_seq');");
-        insert = conexao.prepareStatement("INSERT INTO Responsavel (cpf, pnome, unome, email, senha, id_responsavel) VALUES (?,?,?,?,?,?);");
+        insert = conexao.prepareStatement("INSERT INTO Responsavel (cpf, pnome, unome, email, senha, id_responsavel) VALUES (?,?,?,?,?,?, ?);");
         delete = conexao.prepareStatement("DELETE FROM Responsavel WHERE cpf = ?;");
         update = conexao.prepareStatement(
-                "UPDATE Responsavel SET pnome = ?, unome = ?, email = ?, senha = ?, id_responsavel= ? WHERE cpf = ?;");
+                "UPDATE Responsavel SET pnome = ?, unome = ?, email = ?, senha = ?, id_responsavel= ?, status = ? WHERE cpf = ?;");
         select = conexao.prepareStatement("SELECT * FROM Responsavel WHERE cpf = ?;");
         selectAll = conexao.prepareStatement("SELECT * FROM Responsavel;");
     
@@ -77,7 +77,8 @@ public class ResponsavelDAO {
             insert.setString(3, responsavel.getUnome());
             insert.setString(4, responsavel.getEmail());
             insert.setString(5, responsavel.getSenha());
-            insert.setInt(6, selectNewId());
+            insert.setString(6, responsavel.getStatus());
+            insert.setInt(7, selectNewId());
             insert.executeUpdate();
         } catch (SQLException e) {
             throw new InsertException("Responsavel");
@@ -97,8 +98,9 @@ public class ResponsavelDAO {
         	update.setString(2, responsavel.getUnome());
         	update.setString(3, responsavel.getEmail());
         	update.setString(4, responsavel.getSenha());
-        	update.setInt(5, responsavel.getId_responsavel());
-        	update.setString(6, responsavel.getCpf());
+        	update.setString(5, responsavel.getStatus());
+        	update.setInt(6, responsavel.getId_responsavel());
+        	update.setString(7, responsavel.getCpf());
         	update.executeUpdate();
     	} catch(SQLException e) {
     		throw new UpdateException("responsavel");
@@ -114,11 +116,12 @@ public class ResponsavelDAO {
                 String unome = rs.getString(3);
                 String email = rs.getString(4);
                 String senha = rs.getString(5);
-                int id_responsavel = rs.getInt(6);
+                String status = rs.getString(6);
+                int id_responsavel = rs.getInt(7);
                 
                 
 
-                return new Responsavel(cpf, pnome, unome, email, senha, id_responsavel);
+                return new Responsavel(cpf, pnome, unome, email, senha, status, id_responsavel);
             }
 
         } catch (SQLException e) {
@@ -142,11 +145,12 @@ public class ResponsavelDAO {
                 String unome = rs.getString(3);
                 String email = rs.getString(4);
                 String senha = rs.getString(5);
-                int id_responsavel = rs.getInt(6);
+                String status = rs.getString(6);
+                int id_responsavel = rs.getInt(7);
                 
                 
 
-                lista.add(new Responsavel(cpf, pnome, unome, email, senha, id_responsavel));
+                lista.add(new Responsavel(cpf, pnome, unome, email, senha, status, id_responsavel));
             }
         } catch (SQLException e) {
             throw new SelectException("Responsavel");

@@ -36,10 +36,10 @@ public class ServidorDAO {
         Connection conexao = Conexao.getConexao();
         
         selectNewId = conexao.prepareStatement("SELECT nextval('servidor_id_seq');");
-        insert = conexao.prepareStatement("INSERT INTO Servidor (cpf, pnome, unome, email, senha, id_servidor, funcao) VALUES (?,?,?,?,?,?,?);");
+        insert = conexao.prepareStatement("INSERT INTO Servidor (cpf, pnome, unome, email, senha, id_servidor, funcao) VALUES (?,?,?,?,?,?,?,?);");
         delete = conexao.prepareStatement("DELETE FROM Servidor WHERE cpf = ?;");
         update = conexao.prepareStatement(
-                "UPDATE Servidor SET pnome = ?, unome = ?, email = ?, senha = ?, id_servidor = ?, funcao = ? WHERE cpf = ?;");
+                "UPDATE Servidor SET pnome = ?, unome = ?, email = ?, senha = ?, id_servidor = ?, funcao = ?, status = ? WHERE cpf = ?;");
         select = conexao.prepareStatement("SELECT * FROM Servidor WHERE cpf = ?;");
         selectAll = conexao.prepareStatement("SELECT * FROM Servidor;");
     
@@ -77,8 +77,9 @@ public class ServidorDAO {
             insert.setString(3, servidor.getUnome());
             insert.setString(4, servidor.getEmail());
             insert.setString(5, servidor.getSenha());
-            insert.setInt(6, selectNewId());
-            insert.setString(7, servidor.getFuncao());
+            insert.setString(6, servidor.getStatus());
+            insert.setInt(7, selectNewId());
+            insert.setString(8, servidor.getFuncao());
             insert.executeUpdate();
         } catch (SQLException e) {
             throw new InsertException("servidor");
@@ -98,9 +99,10 @@ public class ServidorDAO {
         	update.setString(2, servidor.getUnome());
         	update.setString(3, servidor.getEmail());
         	update.setString(4, servidor.getSenha());
-        	update.setInt(5, servidor.getId_servidor());
-        	update.setString(6, servidor.getFuncao());
-        	update.setString(7, servidor.getCpf());
+        	update.setString(5, servidor.getStatus());
+        	update.setInt(6, servidor.getId_servidor());
+        	update.setString(7, servidor.getFuncao());
+        	update.setString(8, servidor.getCpf());
         	update.executeUpdate();
     	} catch(SQLException e) {
     		throw new UpdateException("servidor");
@@ -116,12 +118,13 @@ public class ServidorDAO {
                 String unome = rs.getString(3);
                 String email = rs.getString(4);
                 String senha = rs.getString(5);
-                int id_servidor = rs.getInt(6);
-                String funcao = rs.getString(7);
+                String status = rs.getString(6);
+                int id_servidor = rs.getInt(7);
+                String funcao = rs.getString(8);
                 
                 
 
-                return new Servidor(cpf, pnome, unome, email, senha, id_servidor, funcao);
+                return new Servidor(cpf, pnome, unome, email, senha, status, id_servidor, funcao);
             }
 
         } catch (SQLException e) {
@@ -145,12 +148,13 @@ public class ServidorDAO {
                 String unome = rs.getString(3);
                 String email = rs.getString(4);
                 String senha = rs.getString(5);
-                int id_servidor = rs.getInt(6);
-                String funcao = rs.getString(7);
+                String status = rs.getString(6);
+                int id_servidor = rs.getInt(7);
+                String funcao = rs.getString(8);
                 
                 
 
-                lista.add(new Servidor(cpf, pnome, unome, email, senha, id_servidor, funcao));
+                lista.add(new Servidor(cpf, pnome, unome, email, senha, status, id_servidor, funcao));
             }
         } catch (SQLException e) {
             throw new SelectException("servidor");

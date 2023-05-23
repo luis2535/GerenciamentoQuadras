@@ -1,40 +1,30 @@
--- Trigger para não deixar registrar CPF repetido
-
-create or replace function CPFrepetido() returns trigger as
-$$
-begin
-	if(TG_OP = 'INSERT') then
-		if(select 1 from usuario where cpf = new.cpf) then
-			raise exception 'Esse CPF ja esta cadastrado';
-		end if;
-	end if;
-	return new;
-end;
-$$
-language plpgsql;
-
-create trigger CPFrepetido before insert on usuario for each row execute procedure CPFrepetido();
-insert into usuario values(10363195980, 'Luis', 'Bertelli', 'luis@gmail.com','abcde');
-select * from usuario;
-
-
 -- Trigger para não deixar reservar um horário que ja esteja ocupado
 
-create or replace function agendamento_repetido() returns trigger as
+CREATE OR REPLACE FUNCTION agendamento_repetido() RETURNS TRIGGER AS
 $$
-declare
+BEGIN
+	IF EXISTS (
+		SELECT 1
+		FROM agendamento
+		WHERE id_quadra = new.id_quadra
+			AND status = 'ATIVO'
+			AND (
+				(new.horario_inicio::time >= horario_inicio::time AND new.horario_inicio::time < horario_fim::time)
+				OR (new.horario_fim::time > horario_inicio::time AND new.horario_fim::time <= horario_fim::time)
+				OR (new.horario_inicio::time <= horario_inicio::time AND new.horario_fim::time >= horario_inicio::time)
+			)
+			AND (id_agendamento IS NULL OR id_agendamento != new.id_agendamento)
+	) THEN
+		RAISE EXCEPTION 'Já existe um agendamento conflitante nessa quadra';
+	END IF;
+	
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
 
-begin
-	if(select count(*) from agendamento where horario_inicio < new.horario_inicio and horario_fim > new.horario_inicio and id_quadra = new.id_quadra and status = 'Ativo') then
-		raise exception 'Essa quadra ja esta reservada para esse horario';
-	elsif(select count(*) from agendamento where horario_inicio > new.horario_inicio and horario_inicio < new.horario_fim and id_quadra = new.id_quadra and status = 'Ativo' ) then
-		raise exception 'Essa quadra ja esta reservada para esse horario';
-	end if;
-	return new;
-end;
-$$
-language plpgsql;
-create trigger agendamento_repetido before insert or update on agendamento for each row execute procedure agendamento_repetido();
+CREATE TRIGGER agendamento_repetido BEFORE INSERT OR UPDATE ON agendamento FOR EACH ROW EXECUTE FUNCTION agendamento_repetido();
+
 
 
 INSERT INTO Agendamento  VALUES (1, '14:00', '16:00', '2023-05-10', 'Ativo', 10363195980, 1);
@@ -50,38 +40,31 @@ insert into bloco values(1,	'aaa', 'aaaa')
 insert into quadra values (1, 'A', 'a', 1)
 
 
--- Função para ver quantos agendamentos há num intervalo de tempo
 
-create or replace function qtd_agendamentos(vhorario_inicio time, vhorario_fim time, vdata date) returns int as
-$$
-declare 
-	qtd_agendamentos int;
-begin
-	select count(*) into qtd_agendamentos from agendamento where data = vdata and horario_fim > vhorario_inicio and ((horario_inicio >= vhorario_inicio and horario_inicio < vhorario_fim) or (horario_fim > vhorario_inicio and horario_fim <=vhorario_fim));
-	return qtd_agendamentos;
-	
-end;
-$$
-language plpgsql;
-
-select qtd_agendamentos('13:00', '18:00', '2023-05-10');
 -- Trigger para deixar determinado período reservado para eventos extraordinários
 
-create or replace function evento_extraordinario() returns trigger as
-$$
-declare
+CREATE OR REPLACE FUNCTION evento_extraordinario() RETURNS TRIGGER AS $$
+DECLARE
     quadra RECORD;
-begin
-	update Agendamento set status = 'CANCELADO' where data = new.data and ((horario_inicio <= new.horario_inicio and horario_fim > new.horario_inicio) or (horario_inicio > new.horario_inicio and horario_inicio < new.horario_fim));
-    for quadra in select * from Quadra LOOP
-        insert into Agendamento (id_agendamento, data, horario_inicio, horario_fim, status, cpf, id_quadra) values (new.id_evento, new.data, new.horario_inicio, new.horario_fim, 'ATIVO', new.cpf, quadra.id_quadra);
-    end loop;
-    return new;
-end;
-$$
-language plpgsql;
+    agendamento_id INT;
+BEGIN
+    UPDATE Agendamento SET status = 'CANCELADO' WHERE data = new.data AND (
+        (horario_inicio::time <= new.horario_fim::time AND horario_fim::time >= new.horario_inicio::time) OR
+        (horario_inicio::time >= new.horario_inicio::time AND horario_inicio::time <= new.horario_fim::time)
+    );
+    
+    FOR quadra IN SELECT * FROM Quadra LOOP
+        SELECT nextval('agendamento_id_seq') INTO agendamento_id;
+        INSERT INTO Agendamento (id_agendamento, data, horario_inicio, horario_fim, status, cpf, id_quadra)
+        VALUES (agendamento_id, new.data, new.horario_inicio, new.horario_fim, 'ATIVO', new.cpf, quadra.id_quadra);
+    END LOOP;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
-create trigger evento_extraordinario after insert on Evento for each row execute function evento_extraordinario();
+CREATE TRIGGER evento_extraordinario_trigger AFTER INSERT ON Evento FOR EACH ROW EXECUTE FUNCTION evento_extraordinario();
+
 
 insert into evento values (8, '2023-05-10', '13:00', '19:00', 'Ativo', 'EVENTO TESTE', 10363195980);
 select * from agendamento
@@ -89,18 +72,44 @@ drop trigger evento_extraordinario on evento
 
 -- Trigger para ter que possuir 4 dias de antecedencia para marcar um agendamento
 
-create or replace function agendar_antecedencia() returns trigger as
-$$
-begin
-	if new_data < current_date + 4 then
-		raise exception 'Agendamento não permitido com menos de 4 dias de antecedência';
-	end if;
-	return new;
-end;
-$$
-language plpgsql;
+CREATE OR REPLACE FUNCTION agendar_antecedencia() RETURNS TRIGGER AS $$
+BEGIN
+	IF TO_DATE(new.data, 'YYYY-MM-DD') < current_date + INTERVAL '4 days' THEN
+		RAISE EXCEPTION 'Agendamento não permitido com menos de 4 dias de antecedência';
+	END IF;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
-create trigger agendar_antecedencia before insert on agendamento for each row execute function agendar_antecedencia();
+CREATE TRIGGER agendar_antecedencia_trigger
+BEFORE INSERT ON Agendamento
+FOR EACH ROW
+EXECUTE FUNCTION agendar_antecedencia();
+
+-- Trigger para não deixar registrar repetido
+CREATE OR REPLACE FUNCTION evento_repetido() RETURNS TRIGGER AS
+$$
+BEGIN
+	IF EXISTS (
+		SELECT 1
+		FROM Evento
+		WHERE status = 'ATIVO'
+			AND (
+				(new.horario_inicio::time >= horario_inicio::time AND new.horario_inicio::time < horario_fim::time)
+				OR (new.horario_fim::time > horario_inicio::time AND new.horario_fim::time <= horario_fim::time)
+				OR (new.horario_inicio::time <= horario_inicio::time AND new.horario_fim::time >= horario_inicio::time)
+			)
+			AND (id_evento IS NULL OR id_evento != new.id_evento)
+	) THEN
+		RAISE EXCEPTION 'Já existe um Evento conflitante nessa quadra';
+	END IF;
+	
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER evento_repetido BEFORE INSERT OR UPDATE ON Evento FOR EACH ROW EXECUTE FUNCTION evento_repetido();
 
 -- Trigger para deletar Bolsistas, Servidores e Responsaveis sempre que deletar um usuario
 

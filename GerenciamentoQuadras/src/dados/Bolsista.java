@@ -11,12 +11,12 @@ public class Bolsista extends Usuario{
 		this.curso = curso;
 	}
 	
-	public Bolsista(String cpf, String pnome, String unome, String email, String senha) {
-		super(cpf, pnome, unome, email, senha);
+	public Bolsista(String cpf, String pnome, String unome, String email, String senha, String status) {
+		super(cpf, pnome, unome, email, senha, status);
 	}
 	
-	public Bolsista(String cpf, String pnome, String unome, String email, String senha, int id_bolsista, String curso) {
-		super(cpf, pnome, unome, email, senha);
+	public Bolsista(String cpf, String pnome, String unome, String email, String senha, String status, int id_bolsista, String curso) {
+		super(cpf, pnome, unome, email, senha, status);
 		this.id_bolsista = id_bolsista;
 		this.curso = curso;
 	}

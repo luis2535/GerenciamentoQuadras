@@ -36,10 +36,10 @@ public class BolsistaDAO {
         Connection conexao = Conexao.getConexao();
         
         selectNewId = conexao.prepareStatement("SELECT nextval('bolsista_id_seq');");
-        insert = conexao.prepareStatement("INSERT INTO Bolsista (cpf, pnome, unome, email, senha, id_bolsista, curso) VALUES (?,?,?,?,?,?,?);");
+        insert = conexao.prepareStatement("INSERT INTO Bolsista (cpf, pnome, unome, email, senha, id_bolsista, curso) VALUES (?,?,?,?,?,?,?,?);");
         delete = conexao.prepareStatement("DELETE FROM Bolsista WHERE cpf = ?;");
         update = conexao.prepareStatement(
-                "UPDATE Bolsista SET pnome = ?, unome = ?, email = ?, senha = ?, id_bolsista = ?, curso = ? WHERE cpf = ?;");
+                "UPDATE Bolsista SET pnome = ?, unome = ?, email = ?, senha = ?, id_bolsista = ?, curso = ?, status = ? WHERE cpf = ?;");
         select = conexao.prepareStatement("SELECT * FROM Bolsista WHERE cpf = ?;");
         selectAll = conexao.prepareStatement("SELECT * FROM Bolsista;");
     
@@ -78,8 +78,9 @@ public class BolsistaDAO {
             insert.setString(3, bolsista.getUnome());
             insert.setString(4, bolsista.getEmail());
             insert.setString(5, bolsista.getSenha());
-            insert.setInt(6, selectNewId());
-            insert.setString(7, bolsista.getCurso());
+            insert.setString(6, bolsista.getStatus());
+            insert.setInt(7, selectNewId());
+            insert.setString(8, bolsista.getCurso());
             insert.executeUpdate();
         } catch (SQLException e) {
             throw new InsertException("Bolsista");
@@ -99,9 +100,10 @@ public class BolsistaDAO {
         	update.setString(2, bolsista.getUnome());
         	update.setString(3, bolsista.getEmail());
         	update.setString(4, bolsista.getSenha());
-        	update.setInt(5, bolsista.getId_bolsista());
-        	update.setString(6, bolsista.getCurso());
-        	update.setString(7, bolsista.getCpf());
+        	update.setString(5, bolsista.getStatus());
+        	update.setInt(6, bolsista.getId_bolsista());
+        	update.setString(7, bolsista.getCurso());
+        	update.setString(8, bolsista.getCpf());
         	update.executeUpdate();
     	} catch(SQLException e) {
     		throw new UpdateException("Bolsista");
@@ -117,12 +119,14 @@ public class BolsistaDAO {
                 String unome = rs.getString(3);
                 String email = rs.getString(4);
                 String senha = rs.getString(5);
-                int id_bolsista = rs.getInt(6);
-                String curso = rs.getString(7);
+                String status = rs.getString(6);
+                int id_bolsista = rs.getInt(7);
+                String curso = rs.getString(8);
+                
                 
                 
 
-                return new Bolsista(cpf, pnome, unome, email, senha, id_bolsista, curso);
+                return new Bolsista(cpf, pnome, unome, email, senha, status, id_bolsista, curso);
             }
 
         } catch (SQLException e) {
@@ -146,12 +150,13 @@ public class BolsistaDAO {
                 String unome = rs.getString(3);
                 String email = rs.getString(4);
                 String senha = rs.getString(5);
-                int id_bolsista = rs.getInt(6);
-                String curso = rs.getString(7);
+                String status = rs.getString(6);
+                int id_bolsista = rs.getInt(7);
+                String curso = rs.getString(8);
                 
                 
 
-                lista.add(new Bolsista(cpf, pnome, unome, email, senha, id_bolsista, curso));
+                lista.add(new Bolsista(cpf, pnome, unome, email, senha, status, id_bolsista, curso));
             }
         } catch (SQLException e) {
             throw new SelectException("Usuario");
