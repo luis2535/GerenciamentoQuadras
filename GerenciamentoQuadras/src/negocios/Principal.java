@@ -16,8 +16,8 @@ public class Principal {
         try {
             Sistema sistema = Sistema.getInstance();
 
-//            // Exemplo de uso das funções do sistema
-//            Usuario usuario = new Usuario("71992758972", "Fulano", "Silva", "fulano@example.com", "senha123");
+            // Exemplo de uso das funções do sistema
+//            Usuario usuario = new Usuario("71992758972", "Fulano", "Silva", "fulano@example.com", "senha123", "ATIVO");
 //            sistema.insereUsuario(usuario);
 //
 //            Usuario usuarioBuscado = sistema.buscaUsuario("71992758972");
@@ -39,9 +39,9 @@ public class Principal {
 //            for (Usuario u : usuarios) {
 //                System.out.println(u);
 //            }
-//            Bolsista bolsista = new Bolsista("71992758972", "Fulano", "Silva", "fulano@example.com", "senha123", 1, "Civil");
-//            sistema.insereBolsista(bolsista);
-//            
+            //Bolsista bolsista = new Bolsista("71992758972", "Fulano", "Silva", "fulano@example.com", "senha123", "ATIVO", 1, "Civil");
+            //sistema.insereBolsista(bolsista);
+            
 //            Bolsista bolsistaBuscado = sistema.buscaBolsista("71992758972");
 //            System.out.println("Usuário encontrado: " + bolsistaBuscado);
 //
@@ -62,7 +62,7 @@ public class Principal {
 //            	System.out.println(b);
 //            }
             
-//            Servidor servidor = new Servidor("71992758972", "Fulano", "Silva", "fulano@example.com", "senha123", 1, "Civil");
+//            Servidor servidor = new Servidor("71992758972", "Fulano", "Silva", "fulano@example.com", "senha123", "ADMIN",1, "Civil");
 //            sistema.insereServidor(servidor);
 //            
 //            Servidor servidorBuscado = sistema.buscaServidor("71992758972");
@@ -84,30 +84,10 @@ public class Principal {
 //            for(Servidor s : servidores) {
 //            	System.out.println(s);
 //            }
-//            Responsavel responsavel = new Responsavel("71992758974", "Fulano", "Silva", "fulano@example.com", "senha123", 1);
-//            sistema.insereResponsavel(responsavel);
-//            
-//            Responsavel responsavelBuscado = sistema.buscaResponsavel("71992758973");
-//            System.out.println("Usuário encontrado: " + responsavelBuscado);
-//
-//            responsavelBuscado.setUnome("Pereira");
-//            sistema.atualizaResponsavel(responsavelBuscado);
-//
-//            List<Responsavel> responsaveis = sistema.buscaResponsaveis();
-//            System.out.println("Usuários encontrados:");
-//            for (Responsavel r : responsaveis) {
-//                System.out.println(r);
-//            }
-//            
-//            sistema.deletaResponsavel(responsavelBuscado);
-//            
-//            responsaveis = sistema.buscaResponsaveis();
-//            System.out.println("Após exclusao: ");
-//            for(Responsavel r : responsaveis) {
-//            	System.out.println(r);
-//            }
 
-//           Bloco blocoBuscado = sistema.buscaBloco(1);
+//            Bloco bloco = new Bloco(3, "asd", "asd");
+//            sistema.insereBloco(bloco);
+//           Bloco blocoBuscado = sistema.buscaBloco(3);
 //           System.out.println("Bloco Encontrado: "+blocoBuscado);
 //           
 //           blocoBuscado.setNome("A");
@@ -123,7 +103,7 @@ public class Principal {
 //           }
 //           
            
-//           Quadra quadra = new Quadra(1, "Futsal", "Quadra de futsal", bloco);
+//           Quadra quadra = new Quadra(1, "Futsal", "Quadra de futsal", sistema.buscaBloco(1));
 //           sistema.insereQuadra(quadra);
 //           
 //           Quadra quadraBuscada = sistema.buscaQuadra(3);
@@ -145,11 +125,11 @@ public class Principal {
 //           Quadra quadra = sistema.buscaQuadra(4);
 //           Usuario usuario = sistema.buscaUsuario("71992758972");
 //
-//           Agendamento agendamento = new Agendamento(1, "10:00:00", "12:00:00", "2023-05-23", "Ativo", usuario, quadra);
+//           Agendamento agendamento = new Agendamento(1, "10:00:00", "12:00:00", "2024-05-30", "Ativo", sistema.buscaUsuario("123456789"), sistema.buscaQuadra(2));
+//           Reserva reserva = new Reserva(1, agendamento, sistema.buscaEquipamento(2),2);
+//           sistema.insereAgendamento(reserva);
 //           
-//           sistema.insereAgendamento(agendamento);
-//           
-//           Agendamento agendamentobuscado = sistema.buscaAgendamento(1);
+//           Agendamento agendamentobuscado = sistema.buscaAgendamento(66);
 //           System.out.println(agendamentobuscado);
 //           
 //           agendamentobuscado.setStatus("CANCELADO");
@@ -159,8 +139,8 @@ public class Principal {
 //           for(Agendamento a : agendamentos) {
 //        	   System.out.println(a);
 //           }
-//           
-//           sistema.deletaAgendamento(agendamentobuscado);
+           
+//           sistema.deletaAgendamento(reserva);
 //           agendamentos = sistema.buscaAgendamentos();
 //           for(Agendamento a : agendamentos) {
 //        	   System.out.println(a);
@@ -180,12 +160,11 @@ public class Principal {
 //           for(Equipamento e : equipamentos) {
 //        	   System.out.println(e);
 //           }
-        //Evento evento = new Evento(2, "2023-05-26", "12:00", "14:00", "Ativo", "Evento na quadra", sistema.buscaResponsavel("71992758971"), sistema.buscaQuadras());
-        //System.out.println(evento);
-        //sistema.insereEvento(evento);
-         //Evento evento = sistema.buscaEvento(2);
-         //System.out.println(evento);
-        // sistema.deleteEvento(evento);
+//        Evento evento = new Evento(2, "2023-05-30", "12:00", "14:00", "Ativo", "Evento na quadra", sistema.buscaServidor("123456789"), sistema.buscaQuadras());
+//        sistema.insereEvento(evento);
+//         Evento eventos = sistema.buscaEvento(44);
+//         System.out.println(eventos);
+//         sistema.deleteEvento(eventos);
 //         List<Evento> Eventos = sistema.buscaEventos();
 //         for(Evento e : Eventos) {
 //        	 System.out.println(e);
@@ -202,14 +181,14 @@ public class Principal {
 //         System.out.println("Feito");
 //         
 //         
-            Agendamento agendamento = sistema.buscaAgendamento(2);
-            Equipamento equip = sistema.buscaEquipamento(1);
-            
-            Reserva reserva = new Reserva(1, agendamento, equip, 1);
-            
-            sistema.deletaAgendamento(reserva);
-            
-            System.out.println("Feito");
+//            Agendamento agendamento = sistema.buscaAgendamento(2);
+//            Equipamento equip = sistema.buscaEquipamento(1);
+//            
+//            Reserva reserva = new Reserva(1, agendamento, equip, 1);
+//            
+//            sistema.deletaAgendamento(reserva);
+//            
+//            System.out.println("Feito");
             
             
         } catch (Exception e) {

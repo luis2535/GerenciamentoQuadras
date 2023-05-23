@@ -73,6 +73,14 @@ CREATE TABLE Equipamento(
 	tipo varchar(50),
 	descricao varchar(100)
 );
+CREATE TABLE Reserva(
+	id_reserva serial not null PRIMARY KEY,
+	id_agendamento int,
+	id_equipamento int,
+	quantidade_equip int,
+	FOREIGN KEY (id_agendamento) REFERENCES Agendamento,
+	FOREIGN KEY (id_equipamento) REFERENCES Equipamento
+);
 CREATE TABLE QuadraEvento(
 	id_evento int,
 	id_quadra int,

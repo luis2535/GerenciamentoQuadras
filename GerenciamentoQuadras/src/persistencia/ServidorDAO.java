@@ -36,10 +36,10 @@ public class ServidorDAO {
         Connection conexao = Conexao.getConexao();
         
         selectNewId = conexao.prepareStatement("SELECT nextval('servidor_id_seq');");
-        insert = conexao.prepareStatement("INSERT INTO Servidor (cpf, pnome, unome, email, senha, id_servidor, funcao) VALUES (?,?,?,?,?,?,?,?);");
+        insert = conexao.prepareStatement("INSERT INTO Servidor (cpf, pnome, unome, email, senha, status, id_servidor, funcao) VALUES (?,?,?,?,?,?,?,?);");
         delete = conexao.prepareStatement("DELETE FROM Servidor WHERE cpf = ?;");
         update = conexao.prepareStatement(
-                "UPDATE Servidor SET pnome = ?, unome = ?, email = ?, senha = ?, id_servidor = ?, funcao = ?, status = ? WHERE cpf = ?;");
+                "UPDATE Servidor SET pnome = ?, unome = ?, email = ?, senha = ?, status = ?, id_servidor = ?, funcao = ? WHERE cpf = ?;");
         select = conexao.prepareStatement("SELECT * FROM Servidor WHERE cpf = ?;");
         selectAll = conexao.prepareStatement("SELECT * FROM Servidor;");
     

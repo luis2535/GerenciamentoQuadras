@@ -36,10 +36,10 @@ public class BolsistaDAO {
         Connection conexao = Conexao.getConexao();
         
         selectNewId = conexao.prepareStatement("SELECT nextval('bolsista_id_seq');");
-        insert = conexao.prepareStatement("INSERT INTO Bolsista (cpf, pnome, unome, email, senha, id_bolsista, curso) VALUES (?,?,?,?,?,?,?,?);");
+        insert = conexao.prepareStatement("INSERT INTO Bolsista (cpf, pnome, unome, email, senha, status, id_bolsista, curso) VALUES (?,?,?,?,?,?,?,?);");
         delete = conexao.prepareStatement("DELETE FROM Bolsista WHERE cpf = ?;");
         update = conexao.prepareStatement(
-                "UPDATE Bolsista SET pnome = ?, unome = ?, email = ?, senha = ?, id_bolsista = ?, curso = ?, status = ? WHERE cpf = ?;");
+                "UPDATE Bolsista SET pnome = ?, unome = ?, email = ?, senha = ?, status = ?, id_bolsista = ?, curso = ? WHERE cpf = ?;");
         select = conexao.prepareStatement("SELECT * FROM Bolsista WHERE cpf = ?;");
         selectAll = conexao.prepareStatement("SELECT * FROM Bolsista;");
     

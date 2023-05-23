@@ -170,7 +170,6 @@ public class Sistema {
 		evento.setId_evento(id);
 		List<Quadra> quadras = evento.getQuadras();
 		for(Quadra q : quadras) {
-			System.out.println(q);
 			eventoDAO.insertQuadraEvento(evento, q);
 		}
 	}
