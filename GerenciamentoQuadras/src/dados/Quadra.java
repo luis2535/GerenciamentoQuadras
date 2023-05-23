@@ -1,6 +1,7 @@
 package dados;
 
 public class Quadra {
+
 	private int id_quadra;
 	private String modalidade;
 	private String descricao;
@@ -47,5 +48,9 @@ public class Quadra {
 		this.id_bloco = id_bloco;
 	}
 
+	public String toString() {
+		return "Quadra [id_quadra=" + id_quadra + ", modalidade=" + modalidade + ", descricao=" + descricao
+				+ ", id_bloco=" + id_bloco + "]";
+	}
 	
 }

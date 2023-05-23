@@ -11,10 +11,10 @@ public class Servidor extends Usuario{
 		this.id_servidor = id_servidor;
 		this.funcao = funcao;
 	}
-	public Servidor(long cpf, String pnome, String unome, String email, String senha) {
+	public Servidor(String cpf, String pnome, String unome, String email, String senha) {
 		super(cpf, pnome, unome, email, senha);
 	}
-	public Servidor(long cpf, String pnome, String unome, String email, String senha, int id_servidor, String funcao) {
+	public Servidor(String cpf, String pnome, String unome, String email, String senha, int id_servidor, String funcao) {
 		super(cpf, pnome, unome, email, senha);
 		this.id_servidor = id_servidor;
 		this.funcao = funcao;
@@ -35,5 +35,7 @@ public class Servidor extends Usuario{
 	public void setFuncao(String funcao) {
 		this.funcao = funcao;
 	}
-	
+	public String toString() {
+	    return "cpf='" + getCpf() + "', pnome='" + getPnome() + "', unome='" + getUnome() + "', email='" + getEmail() + "', senha='" + getSenha() + "', id_servidor=" + id_servidor + ", funcao='" + funcao + "'}";
+	}
 }

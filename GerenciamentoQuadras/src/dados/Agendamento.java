@@ -1,25 +1,21 @@
 package dados;
 
 
-import java.sql.Time;
-import java.util.Date;
-import java.util.List;
+
 
 
 public class Agendamento {
 	private int id_agendamento;
-	private Time horario_inicio;
-	private Time horario_fim;
-	private Date data;
+	private String horario_inicio;
+	private String horario_fim;
+	private String data;
 	private String status;
 	private Usuario usuario;
 	private Quadra quadra;
-	private List<Equipamento> equipamentos;
-	
 	
 	public Agendamento() {}
 	
-	public Agendamento(int id_agendamento, Time horario_inicio, Time horario_fim, Date data, String status, Usuario usuario, Quadra quadra, List<Equipamento> equipamentos) {
+	public Agendamento(int id_agendamento, String horario_inicio, String horario_fim, String data, String status, Usuario usuario, Quadra quadra) {
 		this.id_agendamento = id_agendamento;
 		this.horario_inicio = horario_inicio;
 		this.horario_fim = horario_fim;
@@ -27,16 +23,9 @@ public class Agendamento {
 		this.status = status;
 		this.usuario = usuario;
 		this.quadra = quadra;
-		this.equipamentos = equipamentos;
+
 	}
 
-	public List<Equipamento> getEquipamentos() {
-		return equipamentos;
-	}
-
-	public void setEquipamentos(List<Equipamento> equipamentos) {
-		this.equipamentos = equipamentos;
-	}
 
 	public int getId_agendamento() {
 		return id_agendamento;
@@ -46,27 +35,27 @@ public class Agendamento {
 		this.id_agendamento = id_agendamento;
 	}
 
-	public Time getHorario_inicio() {
+	public String getHorario_inicio() {
 		return horario_inicio;
 	}
 
-	public void setHorario_inicio(Time horario_inicio) {
+	public void setHorario_inicio(String horario_inicio) {
 		this.horario_inicio = horario_inicio;
 	}
 
-	public Time getHorario_fim() {
+	public String getHorario_fim() {
 		return horario_fim;
 	}
 
-	public void setHorario_fim(Time horario_fim) {
+	public void setHorario_fim(String horario_fim) {
 		this.horario_fim = horario_fim;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 
@@ -92,6 +81,13 @@ public class Agendamento {
 
 	public void setQuadra(Quadra quadra) {
 		this.quadra = quadra;
+	}
+
+	@Override
+	public String toString() {
+		return "Agendamento [id_agendamento=" + id_agendamento + ", horario_inicio=" + horario_inicio + ", horario_fim="
+				+ horario_fim + ", data=" + data + ", status=" + status + ", usuario=" + usuario + ", quadra=" + quadra
+				+ "]";
 	}
 	
 	

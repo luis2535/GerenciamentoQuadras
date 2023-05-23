@@ -11,11 +11,11 @@ public class Bolsista extends Usuario{
 		this.curso = curso;
 	}
 	
-	public Bolsista(long cpf, String pnome, String unome, String email, String senha) {
+	public Bolsista(String cpf, String pnome, String unome, String email, String senha) {
 		super(cpf, pnome, unome, email, senha);
 	}
 	
-	public Bolsista(long cpf, String pnome, String unome, String email, String senha, int id_bolsista, String curso) {
+	public Bolsista(String cpf, String pnome, String unome, String email, String senha, int id_bolsista, String curso) {
 		super(cpf, pnome, unome, email, senha);
 		this.id_bolsista = id_bolsista;
 		this.curso = curso;
@@ -37,6 +37,10 @@ public class Bolsista extends Usuario{
 		this.curso = curso;
 	}
 	
-	
+	@Override
+	public String toString() {
+	    return "cpf='" + getCpf() + "', pnome='" + getPnome() + "', unome='" + getUnome() + "', email='" + getEmail() + "', senha='" + getSenha() + "', id_bolsista=" + id_bolsista + ", curso='" + curso + "'}";
+	}
+
 
 }

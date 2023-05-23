@@ -1,7 +1,7 @@
 package dados;
 
 public class Usuario {
-	private long cpf;
+	private String cpf;
 	private String pnome;
 	private String unome;
 	private String email;
@@ -9,7 +9,7 @@ public class Usuario {
 
 	public Usuario() {}
 	
-	public Usuario(long cpf, String pnome, String unome, String email, String senha) {
+	public Usuario(String cpf, String pnome, String unome, String email, String senha) {
 		this.cpf = cpf;
 		this.pnome = pnome;
 		this.unome = unome;
@@ -17,11 +17,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(long cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 

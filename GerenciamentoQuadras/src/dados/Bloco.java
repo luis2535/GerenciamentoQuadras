@@ -38,4 +38,8 @@ public class Bloco {
 		this.descricao = descricao;
 	}
 
+	public String toString() {
+		return "id_bloco=" + id_bloco + ", nome=" + nome + ", descricao=" + descricao;
+	}
+
 }

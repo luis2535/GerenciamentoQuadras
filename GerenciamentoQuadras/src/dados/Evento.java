@@ -8,17 +8,17 @@ import java.util.List;
 
 public class Evento {
 	private int id_evento;
-	private Date data;
-	private Time horario_inicio;
-	private Time horario_fim;
+	private String data;
+	private String horario_inicio;
+	private String horario_fim;
 	private String status;
 	private String nome;
-	private Usuario usuario;
+	private Responsavel usuario;
 	private List<Quadra> quadras;
 	
 	public Evento() {}
 
-	public Evento(int id_evento, Date data, Time horario_inicio, Time horario_fim, String status, String nome, Usuario usuario, List <Quadra> quadras) {
+	public Evento(int id_evento, String data, String horario_inicio, String horario_fim, String status, String nome, Responsavel usuario, List <Quadra> quadras) {
 		this.id_evento = id_evento;
 		this.data = data;
 		this.horario_inicio = horario_inicio;
@@ -37,27 +37,27 @@ public class Evento {
 		this.id_evento = id_evento;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 
-	public Time getHorario_inicio() {
+	public String getHorario_inicio() {
 		return horario_inicio;
 	}
 
-	public void setHorario_inicio(Time horario_inicio) {
+	public void setHorario_inicio(String horario_inicio) {
 		this.horario_inicio = horario_inicio;
 	}
 
-	public Time getHorario_fim() {
+	public String getHorario_fim() {
 		return horario_fim;
 	}
 
-	public void setHorario_fim(Time horario_fim) {
+	public void setHorario_fim(String horario_fim) {
 		this.horario_fim = horario_fim;
 	}
 
@@ -77,12 +77,27 @@ public class Evento {
 		this.nome = nome;
 	}
 
-	public Usuario getUsuario() {
+
+	public Responsavel getResponsavel() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setResponsavel(Responsavel usuario) {
 		this.usuario = usuario;
+	}
+
+	public List<Quadra> getQuadras() {
+		return quadras;
+	}
+
+	public void setQuadras(List<Quadra> quadras) {
+		this.quadras = quadras;
+	}
+	@Override
+	public String toString() {
+		return "Evento [id_evento=" + id_evento + ", data=" + data + ", horario_inicio=" + horario_inicio
+				+ ", horario_fim=" + horario_fim + ", status=" + status + ", nome=" + nome + ", usuario=" + usuario
+				+ ", quadras=" + quadras + "]";
 	}
 
 

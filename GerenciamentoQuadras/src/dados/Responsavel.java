@@ -8,11 +8,11 @@ public class Responsavel extends Usuario {
 	public Responsavel(int id_responsavel) {
 		this.id_responsavel = id_responsavel;
 	}
-	public Responsavel(long cpf, String pnome, String unome, String email, String senha) {
+	public Responsavel(String cpf, String pnome, String unome, String email, String senha) {
 		super(cpf, pnome, unome, email, senha);
 	}
 	
-	public Responsavel(long cpf, String pnome, String unome, String email, String senha, int id_responsavel) {
+	public Responsavel(String cpf, String pnome, String unome, String email, String senha, int id_responsavel) {
 		super(cpf, pnome, unome, email, senha);
 		this.id_responsavel = id_responsavel;
 	}
@@ -23,5 +23,10 @@ public class Responsavel extends Usuario {
 
 	public void setId_responsavel(int id_responsavel) {
 		this.id_responsavel = id_responsavel;
+	}
+
+	@Override
+	public String toString() {
+		return "Responsavel [id_responsavel=" + id_responsavel + "]";
 	}
 }

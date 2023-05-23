@@ -12,7 +12,7 @@ import excecoes.*;
 
 public class UsuarioDAO {
 	private static UsuarioDAO instance = null;
-	private PreparedStatement selectNewId;
+	
     private PreparedStatement insert;
     private PreparedStatement delete;
     private PreparedStatement update;
@@ -40,7 +40,7 @@ public class UsuarioDAO {
     public void insert(Usuario usuario) throws SelectException, InsertException {
 
         try {
-            insert.setLong(1, usuario.getCpf());
+            insert.setString(1, usuario.getCpf());
             insert.setString(2, usuario.getPnome());
             insert.setString(3, usuario.getUnome());
             insert.setString(4, usuario.getEmail());
@@ -54,7 +54,7 @@ public class UsuarioDAO {
     public void delete(Usuario usuario) throws DeleteException {
 
         try {
-            delete.setLong(1, usuario.getCpf());
+            delete.setString(1, usuario.getCpf());
             delete.executeUpdate();
         } catch (SQLException e) {
             throw new DeleteException("Usuario");
@@ -68,6 +68,7 @@ public class UsuarioDAO {
         	update.setString(2, usuario.getUnome());
         	update.setString(3, usuario.getEmail());
         	update.setString(4, usuario.getSenha());
+        	update.setString(5, usuario.getCpf());
             update.executeUpdate();
         } catch (SQLException e) {
             throw new UpdateException("Usuario");
@@ -75,10 +76,10 @@ public class UsuarioDAO {
 
     }
     
-    public Usuario select(long cpf) throws SelectException {
+    public Usuario select(String cpf) throws SelectException {
 
         try {
-            select.setLong(1, cpf);
+            select.setString(1, cpf);
             ResultSet rs = select.executeQuery();
 
             if(rs.next()){
@@ -108,7 +109,7 @@ public class UsuarioDAO {
             ResultSet rs = selectAll.executeQuery();
 
             while(rs.next()){
-                long cpf = rs.getLong(1);
+                String cpf = rs.getString(1);
                 String pnome = rs.getString(2);
                 String unome = rs.getString(3);
                 String email = rs.getString(4);
