@@ -4,7 +4,8 @@ CREATE TABLE Usuario(
 	unome varchar(50),
 	email varchar(100),
 	senha varchar(100),
-	status varchar(20)
+	status varchar(20),
+	funcao varchar(50)	
 );
 CREATE TABLE Bolsista(
 	cpf char(11) PRIMARY KEY,
@@ -12,21 +13,21 @@ CREATE TABLE Bolsista(
 	unome varchar(50),
 	email varchar(100),
 	senha varchar(100),
-	id_bolsista serial not null,
-	curso varchar(50),
 	status varchar(20),
+	funcao varchar(50),
+	id_bolsista serial not null,
 	FOREIGN KEY (cpf) REFERENCES Usuario (cpf) ON DELETE CASCADE
 	
 );
-CREATE TABLE Servidor(
+CREATE TABLE Admin(
 	cpf char(11) PRIMARY KEY,
 	pnome varchar(50),
 	unome varchar(50),
 	email varchar(100),
 	senha varchar(100),
-	id_servidor serial not null,
-	funcao varchar(50),
 	status varchar(20),
+	funcao varchar(50),
+	id_admin serial not null,	
 	FOREIGN KEY (cpf) REFERENCES Usuario (cpf) ON DELETE CASCADE
 );
 
@@ -65,7 +66,7 @@ CREATE TABLE Evento(
 	status varchar(50),
 	nome varchar(100),
 	cpf char(11),
-	FOREIGN KEY (cpf) REFERENCES Servidor (cpf) match simple
+	FOREIGN KEY (cpf) REFERENCES Admin (cpf) match simple
 	on update cascade on delete set null
 );
 CREATE TABLE Equipamento(
@@ -94,13 +95,10 @@ CREATE SEQUENCE bolsista_id_seq;
 
 SELECT setval('bolsista_id_seq', COALESCE((SELECT MAX(id_bolsista) FROM Bolsista), 0) + 1, false);
 
-CREATE SEQUENCE servidor_id_seq;
+CREATE SEQUENCE admin_id_seq;
 
-SELECT setval('servidor_id_seq', COALESCE((SELECT MAX(id_servidor) FROM Servidor), 0) + 1, false);
+SELECT setval('admin_id_seq', COALESCE((SELECT MAX(id_admin) FROM Admin), 0) + 1, false);
 
-CREATE SEQUENCE responsavel_id_seq;
-
-SELECT setval('responsavel_id_seq', COALESCE((SELECT MAX(id_responsavel) FROM Responsavel), 0) + 1, false);
 
 CREATE SEQUENCE bloco_id_seq;
 

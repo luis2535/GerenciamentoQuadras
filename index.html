@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teste de Requisições HTTP</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h1>Teste de Requisições HTTP</h1>
+
+  <button onclick="selecionarUsuario()">Selecionar Usuário</button>
+  <button onclick="adicionarUsuario()">Adicionar Usuário</button>
+  <button onclick="atualizarUsuario()">Atualizar Usuário</button>
+  <button onclick="deletarUsuario()">Deletar Usuário</button>
+  <button onclick="selecionarUsuarios()">Selecionar Usuários</button>
+
+  <h2>Testes de Requisições para Bolsistas</h2>
+  
+  <button onclick="selecionarBolsista()">Selecionar Bolsista</button>
+  <button onclick="adicionarBolsista()">Adicionar Bolsista</button>
+  <button onclick="atualizarBolsista()">Atualizar Bolsista</button>
+  <button onclick="deletarBolsista()">Deletar Bolsista</button>
+  <button onclick="selecionarBolsistas()">Selecionar Bolsistas</button>
+
+  <script>
+    function selecionarUsuario() {
+      var cpf = "11093720948";
+
+      $.ajax({
+        url: "http://localhost:8080/api/usuario/" + cpf,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          console.log("Usuário selecionado:", response);
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao selecionar usuário:", xhr.status);
+        }
+      });
+    }
+
+    function adicionarUsuario() {
+      var usuario = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "ativo",
+        funcao: "aluno"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/usuario",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(usuario),
+        success: function(response) {
+          console.log("Usuário adicionado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao adicionar usuário:", xhr.status);
+        }
+      });
+    }
+
+    function atualizarUsuario() {
+      var usuario = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "inativo",
+        funcao: "aluno"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/usuario",
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(usuario),
+        success: function(response) {
+          console.log("Usuário atualizado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao atualizar usuário:", xhr.status);
+        }
+      });
+    }
+
+    function deletarUsuario() {
+      var usuario = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "inativo",
+        funcao: "aluno"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/usuario",
+        type: "DELETE",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(usuario),
+        success: function(response) {
+          console.log("Usuário deletado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao deletar usuário:", xhr.status);
+        }
+      });
+    }
+
+    function selecionarUsuarios() {
+      $.ajax({
+        url: "http://localhost:8080/api/usuario",
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          console.log("Usuários selecionados:", response);
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao selecionar usuários:", xhr.status);
+        }
+      });
+    }
+    function selecionarBolsista() {
+      var cpf = "11093720948";
+
+      $.ajax({
+        url: "http://localhost:8080/api/bolsista/" + cpf,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          console.log("Bolsista selecionado:", response);
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao selecionar bolsista:", xhr.status);
+        }
+      });
+    }
+
+    function adicionarBolsista() {
+      var bolsista = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "ativo",
+        funcao: "bolsista",
+        id_bolsista: 1
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/bolsista",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(bolsista),
+        success: function(response) {
+          console.log("Bolsista adicionado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao adicionar bolsista:", xhr.status);
+        }
+      });
+    }
+
+    function atualizarBolsista() {
+      var bolsista = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "inativo",
+        funcao: "bolsista"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/bolsista",
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(bolsista),
+        success: function(response) {
+          console.log("Bolsista atualizado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao atualizar bolsista:", xhr.status);
+        }
+      });
+    }
+
+    function deletarBolsista() {
+      var bolsista = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "inativo",
+        funcao: "bolsista"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/bolsista",
+        type: "DELETE",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(bolsista),
+        success: function(response) {
+          console.log("Bolsista deletado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao deletar bolsista:", xhr.status);
+        }
+      });
+    }
+
+    function selecionarBolsistas() {
+      $.ajax({
+        url: "http://localhost:8080/api/bolsista",
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          console.log("Bolsistas selecionados:", response);
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao selecionar bolsistas:", xhr.status);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

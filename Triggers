@@ -117,22 +117,20 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER agendamento_repetido BEFORE INSERT OR UPDATE ON agendamento FOR EACH ROW EXECUTE FUNCTION agendamento_repetido();
 
 
--- Cria a trigger para impedir a inserção de eventos por servidores sem a função "ADMIN"
-CREATE OR REPLACE FUNCTION verificar_funcao_admin() RETURNS TRIGGER AS $$
+-- Cria a trigger para impedir a inserção de agendamentos por usuarios inativos
+CREATE OR REPLACE FUNCTION verificar_usuario_ativo() RETURNS TRIGGER AS $$
 BEGIN
-    IF (NEW.cpf IN (SELECT cpf FROM Servidor WHERE funcao = 'ADMIN')) THEN
+    IF (NEW.cpf IN (SELECT cpf FROM Usuario WHERE status = 'ATIVO')) THEN
         RETURN NEW;
     ELSE
-        RAISE EXCEPTION 'Apenas servidores com função ADMIN podem adicionar eventos.';
+        RAISE EXCEPTION 'Apenas usuários ativos podem marcar agendamentos';
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+CREATE TRIGGER verificar_usuario_ativo BEFORE INSERT OR UPDATE ON Agendamento FOR EACH ROW EXECUTE FUNCTION verificar_usuario_ativo();
 
 -- Cria a trigger antes de inserir um evento
-CREATE TRIGGER trigger_verificar_funcao_admin
-BEFORE INSERT ON Evento
-FOR EACH ROW
-EXECUTE FUNCTION verificar_funcao_admin();
+
 CREATE OR REPLACE FUNCTION verificar_horarios() RETURNS TRIGGER AS
 $$
 BEGIN
