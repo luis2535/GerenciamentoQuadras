@@ -5,6 +5,10 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+  <h1>Bem-vindo, <span id="nome-usuario"></span>!</h1>
+  <p>Email: <span id="email-usuario"></span></p>
+  <p>Tipo de usuario: <span id="tipo"></span></p>
+
   <h1>Teste de Requisições HTTP</h1>
 
   <button onclick="selecionarUsuario()">Selecionar Usuário</button>
@@ -22,6 +26,51 @@
   <button onclick="selecionarBolsistas()">Selecionar Bolsistas</button>
 
   <script>
+    function checkLogin() {
+    const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+
+
+    if (usuario !== null) {
+      // O usuário está logado, você pode usar as informações do usuário como necessário
+      bolsista = verificaBolsista()
+      console.log('Usuário logado:', usuario);
+      document.getElementById('nome-usuario').textContent = usuario.pnome + usuario.unome;
+      document.getElementById('email-usuario').textContent = usuario.email;
+      if(bolsista !== null){
+
+        document.getElementById('tipo').textContent = 'Bolsista'
+      }else{
+        document.getElementById('tipo').textContent = 'Aluno'
+      }
+      
+    } else {
+      // O usuário não está logado, redireciona para a página de login
+      window.location.href = 'login.html';
+    }
+  }
+
+  // Chama a função checkLogin ao carregar a página
+  window.addEventListener('load', checkLogin);
+
+  function verificaBolsista() {
+  const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+  const cpf = usuario.cpf;
+  const url = "http://localhost:8080/api/bolsista/" + cpf;
+
+  return fetch(url)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Não é um bolsista: " + response.status);
+      }
+    })
+    .then(bolsista => bolsista)
+    .catch(error => {
+      console.error(error);
+      return null;
+    });
+}
     function selecionarUsuario() {
       var cpf = "11093720948";
 

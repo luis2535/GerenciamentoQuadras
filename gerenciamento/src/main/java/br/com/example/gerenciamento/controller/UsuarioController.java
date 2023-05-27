@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.example.gerenciamento.negocios.Sistema;
 import br.com.example.gerenciamento.dados.*;
@@ -24,7 +25,16 @@ UsuarioController {
 	UsuarioController(Sistema sistema){
 		this.sistema = sistema;
 	}
-	
+	@GetMapping("/usuario/login")
+	public Usuario loginUsuario(@RequestParam String cpf, @RequestParam String senha) throws SelectException {
+	    Usuario user = sistema.buscaUsuario(cpf);
+	    if (user != null && user.getSenha().equals(senha)) {
+	        return user;
+	    }
+	    Usuario nulo = new Usuario();
+	    return nulo;
+	}
+
 	@GetMapping("/usuario/{cpf}")
 	public Usuario selecionarUsuario(@PathVariable String cpf) throws SelectException {
 		return sistema.buscaUsuario(cpf);
