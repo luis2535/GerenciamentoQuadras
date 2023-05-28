@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Página Dividida</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #556B2F;
+      height: 70px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px;
+    }
+
+    .user-info {
+      margin-right: 10px;
+    }
+
+    .container {
+      display: flex;
+      height: calc(100vh - 70px);
+    }
+
+    .menu {
+      width: 200px;
+      background-color: #C0C0C0;
+      padding: 10px;
+    }
+
+    .menu-button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 10px;
+    }
+
+    .footer {
+      background-color: #556B2F;
+      height: 50px;
+      color: white;
+      text-align: center;
+      line-height: 50px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="user-info">
+      Usuário: <span id="nome-usuario"></span>
+      <p>Funcao: <span id = "tipo"></span></p>
+    </div>
+  </header>
+  <div class="container">
+    <div class="menu">
+      <button class="menu-button">Botão 1</button>
+      <button class="menu-button">Botão 2</button>
+      <button onclick="encerrarSessao()" class="menu-button">Logout</button>
+      <!-- Adicione mais botões conforme necessário -->
+    </div>
+    <div class="content">
+      <h1>Conteúdo</h1>
+      <!-- Aqui é onde aparecerão as funções realizadas pelos botões -->
+    </div>
+  </div>
+  <div class="footer">
+    Footer
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../js/menu.js"></script>
+</body>
+</html>
