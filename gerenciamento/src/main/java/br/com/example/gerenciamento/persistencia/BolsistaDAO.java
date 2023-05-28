@@ -17,6 +17,7 @@ public class BolsistaDAO {
     
     private PreparedStatement selectNewId;
     private PreparedStatement insert;
+    private PreparedStatement isBolsista;
     private PreparedStatement delete;
     private PreparedStatement update;
     private PreparedStatement select;
@@ -34,6 +35,7 @@ public class BolsistaDAO {
         
         selectNewId = conexao.prepareStatement("SELECT nextval('bolsista_id_seq');");
         insert = conexao.prepareStatement("INSERT INTO Bolsista (cpf, pnome, unome, email, senha, status, funcao, id_bolsista) VALUES (?,?,?,?,?,?,?,?);");
+        isBolsista = conexao.prepareStatement("SELECT COUNT(*) FROM Bolsista WHERE cpf = ?");
         delete = conexao.prepareStatement("DELETE FROM Bolsista WHERE cpf = ?;");
         update = conexao.prepareStatement(
                 "UPDATE Bolsista SET pnome = ?, unome = ?, email = ?, senha = ?, status = ?, funcao = ?, id_bolsista = ? WHERE cpf = ?;");
@@ -82,6 +84,22 @@ public class BolsistaDAO {
         } catch (SQLException e) {
             throw new InsertException("Bolsista");
         }
+    }
+    public boolean isBolsista(String cpf) throws SelectException {
+    	
+    	try {
+    	isBolsista.setString(1, cpf);
+    	
+    	ResultSet rs = isBolsista.executeQuery();
+    		
+    	if(rs.next()) {
+    		int count = rs.getInt(1);
+    		return count > 0;
+    		}
+    	}catch (SQLException e) {
+    		throw new SelectException("Bolsista");
+    	}
+    	return false;
     }
     public void delete(Bolsista bolsista) throws DeleteException {
     	try {

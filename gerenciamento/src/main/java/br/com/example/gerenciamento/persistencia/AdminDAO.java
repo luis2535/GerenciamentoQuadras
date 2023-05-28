@@ -17,6 +17,7 @@ public class AdminDAO {
     
     private PreparedStatement selectNewId;
     private PreparedStatement insert;
+    private PreparedStatement isAdmin;
     private PreparedStatement delete;
     private PreparedStatement update;
     private PreparedStatement select;
@@ -32,13 +33,14 @@ public class AdminDAO {
     private AdminDAO() throws ClassNotFoundException, SQLException {
         Connection conexao = Conexao.getConexao();
         
-        selectNewId = conexao.prepareStatement("SELECT nextval('servidor_id_seq');");
-        insert = conexao.prepareStatement("INSERT INTO Servidor (cpf, pnome, unome, email, senha, status, funcao, id_admin) VALUES (?,?,?,?,?,?,?,?);");
-        delete = conexao.prepareStatement("DELETE FROM Servidor WHERE cpf = ?;");
+        selectNewId = conexao.prepareStatement("SELECT nextval('admin_id_seq');");
+        insert = conexao.prepareStatement("INSERT INTO Admin (cpf, pnome, unome, email, senha, status, funcao, id_admin) VALUES (?,?,?,?,?,?,?,?);");
+        isAdmin = conexao.prepareStatement("SELECT COUNT(*) FROM Admin WHERE cpf = ?");
+        delete = conexao.prepareStatement("DELETE FROM Admin WHERE cpf = ?;");
         update = conexao.prepareStatement(
-                "UPDATE Servidor SET pnome = ?, unome = ?, email = ?, senha = ?, status = ?, funcao = ?, id_admin = ? WHERE cpf = ?;");
-        select = conexao.prepareStatement("SELECT * FROM Servidor WHERE cpf = ?;");
-        selectAll = conexao.prepareStatement("SELECT * FROM Servidor;");
+                "UPDATE Admin SET pnome = ?, unome = ?, email = ?, senha = ?, status = ?, funcao = ?, id_admin = ? WHERE cpf = ?;");
+        select = conexao.prepareStatement("SELECT * FROM Admin WHERE cpf = ?;");
+        selectAll = conexao.prepareStatement("SELECT * FROM Admin;");
     
         usuarioDAO = UsuarioDAO.getInstance();
     }
@@ -81,6 +83,22 @@ public class AdminDAO {
         } catch (SQLException e) {
             throw new InsertException("servidor");
         }
+    }
+    public boolean isAdmin(String cpf) throws SelectException {
+    	
+    	try {
+    	isAdmin.setString(1, cpf);
+    	
+    	ResultSet rs = isAdmin.executeQuery();
+    		
+    	if(rs.next()) {
+    		int count = rs.getInt(1);
+    		return count > 0;
+    		}
+    	}catch (SQLException e) {
+    		throw new SelectException("Admin");
+    	}
+    	return false;
     }
     public void delete(Admin servidor) throws DeleteException {
     	try {

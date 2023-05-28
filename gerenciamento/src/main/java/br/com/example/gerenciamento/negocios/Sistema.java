@@ -80,6 +80,9 @@ public class Sistema {
 	public List<Bolsista> buscaBolsistas() throws SelectException{
 		return bolsistaDAO.selectAll();
 	}
+	public boolean boolBolsista(String cpf) throws SelectException{
+		return bolsistaDAO.isBolsista(cpf);
+	}
 	
 	//----------------------------Admin----------------------------//
 	public void insereServidor(Admin servidor) throws SelectException, InsertException, UpdateException {
@@ -98,6 +101,9 @@ public class Sistema {
 	}
 	public List<Admin> buscaServidores() throws SelectException{
 		return servidorDAO.selectAll();
+	}
+	public boolean boolAdmin(String cpf) throws SelectException{
+		return servidorDAO.isAdmin(cpf);
 	}
 	//----------------------------Bloco----------------------------//
 	public void insereBloco(Bloco bloco) throws SelectException, InsertException{

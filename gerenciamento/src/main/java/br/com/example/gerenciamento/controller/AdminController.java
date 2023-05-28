@@ -25,6 +25,10 @@ AdminController {
 		this.sistema = sistema;
 	}
 	
+	@GetMapping("/isadmin/{cpf}")
+	public boolean isAdmin(@PathVariable String cpf) throws SelectException{
+		return sistema.boolAdmin(cpf);
+	}
 	@GetMapping("/admin/{cpf}")
 	public Admin selecionarAdmin(@PathVariable String cpf) throws SelectException {
 		return sistema.buscaServidor(cpf);

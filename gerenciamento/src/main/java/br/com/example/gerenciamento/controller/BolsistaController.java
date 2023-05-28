@@ -25,6 +25,10 @@ BolsistaController {
 		this.sistema = sistema;
 	}
 	
+	@GetMapping("/isbolsista/{cpf}")
+	public boolean isBolsista(@PathVariable String cpf) throws SelectException{
+		return sistema.boolAdmin(cpf);
+	}
 	@GetMapping("/bolsista/{cpf}")
 	public Bolsista selecionarBolsista(@PathVariable String cpf) throws SelectException {
 		return sistema.buscaBolsista(cpf);

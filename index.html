@@ -25,23 +25,35 @@
   <button onclick="deletarBolsista()">Deletar Bolsista</button>
   <button onclick="selecionarBolsistas()">Selecionar Bolsistas</button>
 
+  <h2>Encerrar Sessão</h2>
+
+  <button onclick="encerrarSessao()">Logout</button>
+  
   <script>
     function checkLogin() {
     const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+    const isBolsista = sessionStorage.getItem('isBolsista');
+    const isAdmin = sessionStorage.getItem('isAdmin');
 
 
     if (usuario !== null) {
       // O usuário está logado, você pode usar as informações do usuário como necessário
-      bolsista = verificaBolsista()
       console.log('Usuário logado:', usuario);
       document.getElementById('nome-usuario').textContent = usuario.pnome + usuario.unome;
       document.getElementById('email-usuario').textContent = usuario.email;
-      if(bolsista !== null){
-
-        document.getElementById('tipo').textContent = 'Bolsista'
+      // if (isBolsista){
+      //   document.getElementById('tipo').textContent = 'Bolsista';
+      // }else{
+      //   document.getElementById('tipo').textContent = usuario.funcao;
+      // }
+      if (isAdmin){
+        document.getElementById('tipo').textContent = 'Admin';
       }else{
-        document.getElementById('tipo').textContent = 'Aluno'
+        document.getElementById('tipo').textContent = usuario.funcao;
       }
+      console.log(isAdmin)
+      console.log(isBolsista)
+
       
     } else {
       // O usuário não está logado, redireciona para a página de login
@@ -52,25 +64,6 @@
   // Chama a função checkLogin ao carregar a página
   window.addEventListener('load', checkLogin);
 
-  function verificaBolsista() {
-  const usuario = JSON.parse(sessionStorage.getItem('usuario'));
-  const cpf = usuario.cpf;
-  const url = "http://localhost:8080/api/bolsista/" + cpf;
-
-  return fetch(url)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Não é um bolsista: " + response.status);
-      }
-    })
-    .then(bolsista => bolsista)
-    .catch(error => {
-      console.error(error);
-      return null;
-    });
-}
     function selecionarUsuario() {
       var cpf = "11093720948";
 
@@ -272,20 +265,11 @@
         }
       });
     }
-
-    function selecionarBolsistas() {
-      $.ajax({
-        url: "http://localhost:8080/api/bolsista",
-        type: "GET",
-        dataType: "json",
-        success: function(response) {
-          console.log("Bolsistas selecionados:", response);
-        },
-        error: function(xhr, status, error) {
-          console.error("Erro ao selecionar bolsistas:", xhr.status);
-        }
-      });
+    function encerrarSessao(){
+      sessionStorage.clear();
+      window.location.href = 'login.html';
     }
+
   </script>
 </body>
 </html>

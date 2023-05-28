@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>Tela de Login</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <style>
     body {
       background-color: #f2f2f2;
@@ -68,38 +70,92 @@
       <div id="error-message" style="color: red;"></div>
     </form>
   </div>
-
+  
   <script>
-    document.getElementById('login-button').addEventListener('click', function(event) {
-      event.preventDefault(); // Impede o envio padrão do formulário
-      
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      
-      const url = `http://localhost:8080/api/usuario/login?cpf=${username}&senha=${password}`;
-
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          // Processa a resposta do servidor
-          if (data.cpf !== null) {
-            // Login bem-sucedido, redireciona para outra página ou executa outras ações
-            console.log('Login bem-sucedido:', data);
-            sessionStorage.setItem('usuario',JSON.stringify(data));
-            window.location.href = 'index.html'
-          } else {
-            // Credenciais inválidas, exibe mensagem de erro ou executa outras ações
-            const errorElement = document.getElementById('error-message');
-            errorElement.textContent = 'Usuário ou senha inválido, digite novamente.';
-
-            console.log('Credenciais inválidas');
+    function isBolsista(cpf) {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          url: `http://localhost:8080/api/isbolsista/${cpf}`,
+          type: "GET",
+          dataType: "json",
+          success: function(response) {
+            console.log("Busca bolsista realizada");
+            resolve(response);
+          },
+          error: function(xhr, status, error) {
+            console.error("Erro ao selecionar bolsistas:", xhr.status);
+            reject(error);
           }
+        });
+      });
+    }
+    function isAdmin(cpf) {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          url: `http://localhost:8080/api/isadmin/${cpf}`,
+          type: "GET",
+          dataType: "json",
+          success: function(response) {
+            console.log("Busca admin realizada");
+            resolve(response);
+          },
+          error: function(xhr, status, error) {
+            console.error("Erro ao selecionar Admins:", xhr.status);
+            reject(error);
+          }
+        });
+      });
+    }
+    
+  document.getElementById('login-button').addEventListener('click', function(event) {
+  event.preventDefault();
+
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  // Limpar o campo de senha
+  document.getElementById('password').value = '';
+
+  
+  const url = `http://localhost:8080/api/usuario/login?cpf=${username}&senha=${password}`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+    if (data.cpf !== null) {
+      console.log('Login bem-sucedido:', data);
+      sessionStorage.setItem('usuario', JSON.stringify(data));
+
+      Promise.all([isBolsista(data.cpf), isAdmin(data.cpf)])
+        .then(results => {
+          const isBolsistaResult = results[0];
+          const isAdminResult = results[1];
+
+          console.log('isBolsista:', isBolsistaResult);
+          console.log('isAdmin:', isAdminResult);
+
+          sessionStorage.setItem('isBolsista', isBolsistaResult);
+          sessionStorage.setItem('isAdmin', isAdminResult);
+
+          window.location.href = 'index.html';
         })
         .catch(error => {
-          // Ocorreu um erro durante a requisição, trata o erro
           console.error('Erro durante a requisição:', error);
         });
-    });
+    } else {
+      const errorElement = document.getElementById('error-message');
+      errorElement.textContent = 'Usuário ou senha inválido, digite novamente.';
+
+      console.log('Credenciais inválidas');
+    }
+  })
+  .catch(error => {
+    console.error('Erro durante a requisição:', error);
+  });
+})
+
+
+
+    
   </script>
 </body>
 </html>
