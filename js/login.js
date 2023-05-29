@@ -33,7 +33,7 @@ function isBolsista(cpf) {
     });
   }
 
-document.getElementById('login-button').addEventListener('click', function(event) {
+  document.getElementById('login-button').addEventListener('click', function(event) {
     event.preventDefault();
   
     const username = document.getElementById('username').value;
@@ -41,40 +41,40 @@ document.getElementById('login-button').addEventListener('click', function(event
     // Limpar o campo de senha
     document.getElementById('password').value = '';
   
-    
     const url = `http://localhost:8080/api/usuario/login?cpf=${username}&senha=${password}`;
   
     fetch(url)
       .then(response => response.json())
       .then(data => {
-      if (data.cpf !== null) {
-        console.log('Login bem-sucedido:', data);
-        sessionStorage.setItem('usuario', JSON.stringify(data));
+        if (data.cpf !== null) {
+          console.log('Login bem-sucedido:', data);
+          sessionStorage.setItem('usuario', JSON.stringify(data));
   
-        Promise.all([isBolsista(data.cpf), isAdmin(data.cpf)])
-          .then(results => {
-            const isBolsistaResult = results[0];
-            const isAdminResult = results[1];
+          isBolsista(data.cpf)
+            .then(isBolsistaResult => {
+              console.log('isBolsista:', isBolsistaResult);
+              sessionStorage.setItem('isBolsista', isBolsistaResult);
+              
+              return isAdmin(data.cpf);
+            })
+            .then(isAdminResult => {
+              console.log('isAdmin:', isAdminResult);
+              sessionStorage.setItem('isAdmin', isAdminResult);
   
-            console.log('isBolsista:', isBolsistaResult);
-            console.log('isAdmin:', isAdminResult);
+              window.location.href = "../html/menu.html";
+            })
+            .catch(error => {
+              console.error('Erro durante a requisição:', error);
+            });
+        } else {
+          const errorElement = document.getElementById('error-message');
+          errorElement.textContent = 'Usuário ou senha inválido, digite novamente.';
   
-            sessionStorage.setItem('isBolsista', isBolsistaResult);
-            sessionStorage.setItem('isAdmin', isAdminResult);
+          console.log('Credenciais inválidas');
+        }
+      })
+      .catch(error => {
+        console.error('Erro durante a requisição:', error);
+      });
+  });
   
-            window.location.href = "../html/menu.html";
-          })
-          .catch(error => {
-            console.error('Erro durante a requisição:', error);
-          });
-      } else {
-        const errorElement = document.getElementById('error-message');
-        errorElement.textContent = 'Usuário ou senha inválido, digite novamente.';
-  
-        console.log('Credenciais inválidas');
-      }
-    })
-    .catch(error => {
-      console.error('Erro durante a requisição:', error);
-    });
-  })

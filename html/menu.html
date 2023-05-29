@@ -1,57 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Página Dividida</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #556B2F;
-      height: 70px;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 10px;
-    }
-
-    .user-info {
-      margin-right: 10px;
-    }
-
-    .container {
-      display: flex;
-      height: calc(100vh - 70px);
-    }
-
-    .menu {
-      width: 200px;
-      background-color: #C0C0C0;
-      padding: 10px;
-    }
-
-    .menu-button {
-      display: block;
-      width: 100%;
-      margin-bottom: 10px;
-    }
-
-    .content {
-      flex-grow: 1;
-      padding: 10px;
-    }
-
-    .footer {
-      background-color: #556B2F;
-      height: 50px;
-      color: white;
-      text-align: center;
-      line-height: 50px;
-    }
-  </style>
+  <title>Reserva de Quadras</title>
+  <link rel="stylesheet" href="../css/menu.css">
 </head>
 <body>
   <header>
@@ -62,13 +13,95 @@
   </header>
   <div class="container">
     <div class="menu">
-      <button class="menu-button">Botão 1</button>
+      <button class="menu-button" id="gerenciar-blocos">Gerenciar Blocos</button>
+      <button class="menu-button" id="gerenciar-quadras">Gerenciar Quadras</button>
+      <button class="menu-button" id="gerenciar-equipamentos">Gerenciar Equipamentos</button>
+      <button class="menu-button" id="gerenciar-usuarios">Cadastrar Usuários</button>
+      <button class="menu-button" id="show-calendar-button">Mostrar Calendario</button>
+      
       <button class="menu-button">Botão 2</button>
       <button onclick="encerrarSessao()" class="menu-button">Logout</button>
       <!-- Adicione mais botões conforme necessário -->
     </div>
     <div class="content">
-      <h1>Conteúdo</h1>
+      <div class="calendar">
+        <table>
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th>Dia 1</th>
+              <th>Dia 2</th>
+              <th>Dia 3</th>
+              <th>Dia 4</th>
+              <th>Dia 5</th>
+              <th>Dia 6</th>
+              <th>Dia 7</th>
+            </tr>
+          </thead>
+          <tbody id="calendar-body">
+            <!-- Os dados serão preenchidos dinamicamente aqui -->
+          </tbody>
+        </table>
+      </div>
+      <div class="bloco-container">
+        <p>Nome do Bloco:</p>
+        <input type="text" id="nome-bloco" placeholder="Nome do Bloco">
+        <p>Descrição do Bloco:</p>
+        <input type="text" id="descricao-bloco" placeholder="Descrição do Bloco">
+        <button id="adicionar-bloco-button">Adicionar Bloco</button>
+        <div id="blocos-container"></div>
+      </div>
+      <div class="quadra-container">
+        <p>Modalidade da Quadra:</p>
+        <input type="text" id="modalidade-quadra" placeholder="Modalidade da Quadra">
+        <p>Descrição da Quadra:</p>
+        <input type="text" id="descricao-quadra" placeholder="Descrição da Quadra">
+        <p>Bloco:</p>
+        <select id="select-bloco">
+          <!-- Os dados dos blocos serão preenchidos dinamicamente aqui -->
+        </select>
+        <button id="adicionar-quadra-button">Adicionar Quadra</button>
+      </div>
+        <div class="user-container">
+        <h2>Cadastrar Usuários</h2>
+        <form id="gerenciar-usuarios-form">
+          <label for="cpf">CPF:</label>
+          <input type="text" id="cpf" placeholder="CPF" required>
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" placeholder="Nome" required>
+          <label for="sobrenome">Sobrenome:</label>
+          <input type="text" id="sobrenome" placeholder="Sobrenome" required>
+          <label for="email">Email:</label>
+          <input type="email" id="email" placeholder="Email" required>
+          <label for="senha">Senha:</label>
+          <input type="password" id="senha" placeholder="Senha" required>
+          <label for="status">Status:</label>
+          <select id="status">
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
+          <label for="funcao">Função:</label>
+          <select id="funcao">
+            <option value="aluno">Aluno</option>
+            <option value="bolsista">Bolsista</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button type="submit">Adicionar Usuário</button>
+        </form>
+      </div>
+
+      <div class="equipamentos-container">
+        <h2>Adicionar Equipamento</h2>
+            <p>Nome do Equipamento:</p>
+            <input type="text" id="nome-equip" placeholder="Nome do Equipamento">
+            <p>Descrição do Equipamento:</p>
+            <input type="text" id="descricao-equip" placeholder="Descrição do Equipamento">
+          <button id="adicionar-equip-button">Adicionar Equipamento</button>
+          <div id="equipamento-container"></div>
+        </div>
+      
+      
+
       <!-- Aqui é onde aparecerão as funções realizadas pelos botões -->
     </div>
   </div>

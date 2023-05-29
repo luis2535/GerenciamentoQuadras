@@ -30,8 +30,9 @@ QuadraController {
 		return sistema.buscaQuadra(id_quadra);
 	}
 	
-	@PostMapping("/quadra")
-	public void adicionaQuadra(@RequestBody Quadra quadra) throws SelectException, InsertException {
+	@PostMapping("/quadra/{id}")
+	public void adicionaQuadra(@RequestBody Quadra quadra, @PathVariable int id) throws SelectException, InsertException {		
+		quadra.setId_bloco(new Bloco(id, null, null));
 		sistema.insereQuadra(quadra);
 	}
 	@PutMapping("/quadra")
