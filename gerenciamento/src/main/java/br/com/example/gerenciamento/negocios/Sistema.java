@@ -56,6 +56,10 @@ public class Sistema {
 	public void atualizaUsuario(Usuario usuario) throws UpdateException {
 		usuarioDAO.update(usuario);
 	}
+
+	public void updateUser(List<Usuario> usuario) throws UpdateException {
+		usuarioDAO.updateUser(usuario);
+	}
 	public Usuario buscaUsuario(String cpf) throws SelectException {
 		return usuarioDAO.select(cpf);
 	}

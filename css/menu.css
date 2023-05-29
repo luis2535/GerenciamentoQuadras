@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
+  overflow-x: hidden; /* Impede a rolagem horizontal */
 }
 
 header {
@@ -15,8 +16,11 @@ header {
 }
 
 .user-info {
+  background-color: #388E3C;
   margin-right: 10px;
   font-size: 16px;
+  border: 1px solid black;
+  padding: 7px;
 }
 
 .container {
@@ -25,9 +29,18 @@ header {
 }
 
 .menu {
-  width: 200px;
+  width: 18%;
   background-color: #C0C0C0;
-  padding: 10px;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px; 
+
+}
+
+menu-body {
+  width: 100%;
+  padding: 30px;
+  
 }
 
 .menu-button {
@@ -53,6 +66,8 @@ header {
   flex-direction: column;
   flex-grow: 1;
   padding: 10px;
+  position: relative;
+  display: none;
 }
 
 .footer {
@@ -75,7 +90,7 @@ header {
 
   .calendar {
     width: 100%;
-    overflow-x: auto;
+    overflow-x: auto; 
     display: none;
     flex-direction: column;
 
@@ -131,6 +146,12 @@ header {
   margin-left: auto;
   margin-right: auto;
   display: none;
+}
+.apresentacao {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 #quadras-container {
@@ -259,11 +280,19 @@ header {
   
 
   .bolsista-container {
-    margin-top: 20px;
     padding: 10px;
     background-color: #f2f2f2;
     border-radius: 5px;
     width: 50%;
+    display:none;
+  }
+
+  .bolsista-container-body {
+    padding: 20px;
+  }
+
+  #submit-button {
+    margin-top: 10px;
   }
   
   .bolsista-container label {
@@ -325,13 +354,98 @@ header {
   .admin-container button:hover {
     background-color: #45a049;
   }
-  #agendamentos-container {
+  .agendamentos-container {
     border: 1px solid black;
     padding: 10px;
   }
-  .meus-agendamentos-container{
+  .agendamento{
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .agendamentos{
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .meus-agendamentos-container {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
     display: none;
+    overflow-y: auto; /* Habilita a barra de rolagem vertical */
   }
+  .gerenciar-agendamentos-container {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+    overflow-y: auto; /* Habilita a barra de rolagem vertical */
+  }
+  .todo-agendamentos-container {
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .todo-agendamentos-container button {
+    width: calc(33.33% - 10px); /* Largura igual para os três botões */
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px; /* Espaçamento entre os botões */
+  }
+  
+  .todo-agendamentos-container button:last-child {
+    margin-right: 0; /* Remove a margem do último botão para evitar espaçamento extra */
+  }
+  
+  
+
+  
+  .hidden {
+    display: none;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+
+  
+  .bolsista-funcao {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    width: 50%;
+  }
+  
+  .bolsista-funcao label {
+    font-weight: bold;
+  }
+  
+  .bolsista-funcao select,
+  .bolsista-funcao input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .bolsista-funcao button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .bolsista-funcao button:hover {
+    background-color: #45a049;
+  }
+  

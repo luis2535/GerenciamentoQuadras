@@ -26,18 +26,21 @@ if (usuario !== null) {
     $('#gerenciar-equipamentos').show();
     $('#gerenciar-usuarios').show();
     $('.admin-container').show();
-
+    $('#gerenciar-bolsista').show();
+    $('#gerenciar-agendamentos').show();
   } else {
     $('#gerenciar-blocos').hide();
     $('#gerenciar-quadras').hide();
     $('#gerenciar-equipamentos').hide();
     $('#gerenciar-usuarios').hide();
     $('.admin-container').hide();
+    $('#gerenciar-bolsista').hide();
+    $('#gerenciar-agendamentos').hide();
   }
   if (isAdmin || isBolsista){
-    $('.bolsista-container').show();
+    $('.bolsista-funcao').show();
   }else{
-    $('.bolsista-container').hide();
+    $('.bolsista-funcao').hide();
   }
 
   
@@ -46,8 +49,34 @@ if (usuario !== null) {
   window.location.href = 'login.html';
 }
 }
+const showApresentacao = document.getElementById('menuPrincipal');
+showApresentacao.addEventListener('click', function(){
+  $('.bolsista-container').hide();
+  const container = document.querySelector('.content');
+  container.style.display = 'none';
+  const calendarContainer = document.querySelector('.calendar');
+  calendarContainer.style.display = 'none';
+  const blocoContainer = document.querySelector('.bloco-container');
+  blocoContainer.style.display = 'none';
+  const quadraContainer = document.querySelector('.quadra-container');
+  quadraContainer.style.display = 'none';
+  const userContainer = document.querySelector('.user-container');
+  userContainer.style.display = 'none';
+  const equipamentoContainer = document.querySelector('.equipamentos-container');
+  equipamentoContainer.style.display = 'none';
+  const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
+  meuAgendamentoContainer.style.display = 'none';
+  const todoAgendamentoContainer = document.querySelector('.gerenciar-agendamentos-container');
+  todoAgendamentoContainer.style.display = 'none';
+  const apresentacaoContainer = document.querySelector('.apresentacao');
+  apresentacaoContainer.style.display = 'block';
+});
+
 const showCalendarButton = document.getElementById('show-calendar-button');
 showCalendarButton.addEventListener('click', function() {
+  $('.bolsista-container').hide();
+  const container = document.querySelector('.content');
+  container.style.display = 'flex';
   const calendarContainer = document.querySelector('.calendar');
   calendarContainer.style.display = 'flex';
   const blocoContainer = document.querySelector('.bloco-container');
@@ -60,10 +89,17 @@ showCalendarButton.addEventListener('click', function() {
   equipamentoContainer.style.display = 'none';
   const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
   meuAgendamentoContainer.style.display = 'none';
+  const todoAgendamentoContainer = document.querySelector('.gerenciar-agendamentos-container');
+  todoAgendamentoContainer.style.display = 'none';
+  const apresentacaoContainer = document.querySelector('.apresentacao');
+  apresentacaoContainer.style.display = 'none';
 });
 
 const blocoButton = document.getElementById('gerenciar-blocos');
 blocoButton.addEventListener('click', function() {
+  $('.bolsista-container').hide();
+  const container = document.querySelector('.content');
+  container.style.display = 'none';
   const calendarContainer = document.querySelector('.calendar');
   calendarContainer.style.display = 'none';
   const gerenciarBloco = document.querySelector('.bloco-container');
@@ -76,10 +112,41 @@ blocoButton.addEventListener('click', function() {
   equipamentoContainer.style.display = 'none';
   const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
   meuAgendamentoContainer.style.display = 'none';
+  const todoAgendamentoContainer = document.querySelector('.gerenciar-agendamentos-container');
+  todoAgendamentoContainer.style.display = 'none';
+  const apresentacaoContainer = document.querySelector('.apresentacao');
+  apresentacaoContainer.style.display = 'none';
+});
+
+const gerenciarButton = document.getElementById('gerenciar-bolsista');
+gerenciarButton.addEventListener('click', function() {
+  const container = document.querySelector('.content');
+  container.style.display = 'none';
+  const bolsistaContainer = document.querySelector('.bolsista-container');
+  bolsistaContainer.style.display = 'block';
+  const calendarContainer = document.querySelector('.calendar');
+  calendarContainer.style.display = 'none';
+  const gerenciarBloco = document.querySelector('.bloco-container');
+  gerenciarBloco.style.display = 'none';
+  const quadraContainer = document.querySelector('.quadra-container');
+  quadraContainer.style.display = 'none';
+  const userContainer = document.querySelector('.user-container');
+  userContainer.style.display = 'none';
+  const equipamentoContainer = document.querySelector('.equipamentos-container');
+  equipamentoContainer.style.display = 'none';
+  const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
+  meuAgendamentoContainer.style.display = 'none';
+  const todoAgendamentoContainer = document.querySelector('.gerenciar-agendamentos-container');
+  todoAgendamentoContainer.style.display = 'none';
+  const apresentacaoContainer = document.querySelector('.apresentacao');
+  apresentacaoContainer.style.display = 'none';
 });
 
 const gerenciarQuadrasButton = document.getElementById('gerenciar-quadras');
 gerenciarQuadrasButton.addEventListener('click', function() {
+  const container = document.querySelector('.content');
+  container.style.display = 'none';
+  $('.bolsista-container').hide();
   const calendarContainer = document.querySelector('.calendar');
   calendarContainer.style.display = 'none';
   const blocoContainer = document.querySelector('.bloco-container');
@@ -92,12 +159,19 @@ gerenciarQuadrasButton.addEventListener('click', function() {
   equipamentoContainer.style.display = 'none';
   const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
   meuAgendamentoContainer.style.display = 'none';
+  const todoAgendamentoContainer = document.querySelector('.gerenciar-agendamentos-container');
+  todoAgendamentoContainer.style.display = 'none';
+  const apresentacaoContainer = document.querySelector('.apresentacao');
+  apresentacaoContainer.style.display = 'none';
 
   carregarBlocos();
 });
 
 const gerenciarUsuariosButton = document.getElementById('gerenciar-usuarios');
 gerenciarUsuariosButton.addEventListener('click', function() {
+  const container = document.querySelector('.content');
+  container.style.display = 'none';
+  $('.bolsista-container').hide();
   const userContainer = document.querySelector('.user-container');
   userContainer.style.display = 'block';
   const gerenciarBloco = document.querySelector('.bloco-container');
@@ -110,10 +184,17 @@ gerenciarUsuariosButton.addEventListener('click', function() {
   equipamentoContainer.style.display = 'none';
   const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
   meuAgendamentoContainer.style.display = 'none';
+  const todoAgendamentoContainer = document.querySelector('.gerenciar-agendamentos-container');
+  todoAgendamentoContainer.style.display = 'none';
+  const apresentacaoContainer = document.querySelector('.apresentacao');
+  apresentacaoContainer.style.display = 'none';
 });
 
 const gerenciarEquipamentosButton = document.getElementById('gerenciar-equipamentos');
 gerenciarEquipamentosButton.addEventListener('click', function() {
+  const container = document.querySelector('.content');
+  container.style.display = 'none';
+  $('.bolsista-container').hide();
   const userContainer = document.querySelector('.user-container');
   userContainer.style.display = 'none';
   const gerenciarBloco = document.querySelector('.bloco-container');
@@ -126,9 +207,17 @@ gerenciarEquipamentosButton.addEventListener('click', function() {
   equipamentoContainer.style.display = 'block';
   const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
   meuAgendamentoContainer.style.display = 'none';
+  const todoAgendamentoContainer = document.querySelector('.gerenciar-agendamentos-container');
+  todoAgendamentoContainer.style.display = 'none';
+  const apresentacaoContainer = document.querySelector('.apresentacao');
+  apresentacaoContainer.style.display = 'none';
+
 });
 const meusAgendamentosButton = document.getElementById('meus-agendamentos');
 meusAgendamentosButton.addEventListener('click', function(){
+  const container = document.querySelector('.content');
+  container.style.display = 'none';
+  $('.bolsista-container').hide();
   const userContainer = document.querySelector('.user-container');
   userContainer.style.display = 'none';
   const gerenciarBloco = document.querySelector('.bloco-container');
@@ -141,9 +230,39 @@ meusAgendamentosButton.addEventListener('click', function(){
   equipamentoContainer.style.display = 'none';
   const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
   meuAgendamentoContainer.style.display = 'block';
+  const todoAgendamentoContainer = document.querySelector('.gerenciar-agendamentos-container');
+  todoAgendamentoContainer.style.display = 'none';
+  const apresentacaoContainer = document.querySelector('.apresentacao');
+  apresentacaoContainer.style.display = 'none';
 
   getMeusAgendamentos();
 });
+
+const todosAgendamentosButton = document.getElementById('gerenciar-agendamentos');
+todosAgendamentosButton.addEventListener('click', function(){
+  const container = document.querySelector('.content');
+  container.style.display = 'none';
+  $('.bolsista-container').hide();
+  const userContainer = document.querySelector('.user-container');
+  userContainer.style.display = 'none';
+  const gerenciarBloco = document.querySelector('.bloco-container');
+  gerenciarBloco.style.display = 'none';
+  const calendarContainer = document.querySelector('.calendar');
+  calendarContainer.style.display = 'none';
+  const quadraContainer = document.querySelector('.quadra-container');
+  quadraContainer.style.display = 'none';
+  const equipamentoContainer = document.querySelector('.equipamentos-container');
+  equipamentoContainer.style.display = 'none';
+  const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
+  meuAgendamentoContainer.style.display = 'none';
+  const todoAgendamentoContainer = document.querySelector('.gerenciar-agendamentos-container');
+  todoAgendamentoContainer.style.display = 'block';
+  const apresentacaoContainer = document.querySelector('.apresentacao');
+  apresentacaoContainer.style.display = 'none';
+
+  getTodosAgendamento();
+});
+
 
 // Chama a função checkLogin ao carregar a página
 window.addEventListener('load', checkLogin);
@@ -350,7 +469,6 @@ function getQuadras(){
     type: 'GET',
     dataType: 'json',
     success: function(response) {
-      console.log(response);
       exibirQuadras(response);
     },
     error: function(xhr, status, erro) {
@@ -867,8 +985,8 @@ function getMeusAgendamentos() {
       const agendamentos = []; // Move a declaração da variável para fora do loop
 
       response.forEach(function(agendamento) {
-        console.log(agendamento.usuario);
-        console.log(usuario);
+        console.log(agendamento.usuario.cpf);
+        console.log(usuario.cpf);
         if (agendamento.usuario.cpf === usuario.cpf) {
           agendamentos.push(agendamento);
         }
@@ -883,9 +1001,10 @@ function getMeusAgendamentos() {
   });
 }
 function exibirAgendamentos(agendamentos) {
-  const agendamentosContainer = $('#agendamentos-container');
+  const agendamentosContainer = $('.agendamentos-container');
+
   agendamentosContainer.empty();
-console.log(agendamentosContainer);
+  console.log(agendamentosContainer);
   
   agendamentos.forEach(function(agendamento) {
     const agendamentoDiv = $('<div>').addClass('agendamento');
@@ -899,9 +1018,12 @@ console.log(agendamentosContainer);
       cancelaButton.data('agendamento', agendamento);
       agendamentoDiv.append(dataSpan, inicioSpan, fimSpan, quadraSpan, statusSpan, cancelaButton);
       agendamentosContainer.append(agendamentoDiv);
+      console.log(agendamentosContainer);
+    }else{
+      agendamentoDiv.append(dataSpan, inicioSpan, fimSpan, quadraSpan, statusSpan);
+      agendamentosContainer.append(agendamentoDiv);
+      console.log(agendamentosContainer);
     }
-    agendamentoDiv.append(dataSpan, inicioSpan, fimSpan, quadraSpan, statusSpan);
-    agendamentosContainer.append(agendamentoDiv);
   });
 }
 function cancelarAgendamento(){
@@ -938,3 +1060,241 @@ function cancelarAgendamento(){
 
 
 getMeusAgendamentos();
+cancelarAgendamento();
+
+function obterUsuarios() {
+  $.ajax({
+    url: "http://localhost:8080/api/usuario",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+      console.log("Usuários obtidos com sucesso:", response);
+
+      // Chame a função para exibir os usuários no console ou em outro lugar desejado
+      exibirUsuarios(response);
+    },
+    error: function(xhr, status, error) {
+      console.error("Erro ao obter usuários:", xhr.status);
+    }
+  });
+}
+
+function exibirUsuarios(usuarios) {
+  var userList = $('#user-list');
+  userList.empty();
+
+  for (var i = 0; i < usuarios.length; i++) {
+    var usuario = usuarios[i];
+
+    // Verifica se a função do usuário é diferente de "admin"
+    if (usuario.funcao !== 'admin') {
+      var row = $('<tr>');
+      var checkboxCell = $('<td>');
+      var cpfCell = $('<td>').text(usuario.cpf);
+      
+      var funcaoCell = $('<td>').text(usuario.funcao);
+      var pnomeCell = $('<td>').text(usuario.pnome);
+      
+
+
+      var checkbox = $('<input>')
+        .attr('type', 'checkbox')
+        .attr('name', 'bolsista-checkbox')
+        .val(usuario.cpf);
+
+      // Define o estado da checkbox com base na função do usuário
+      if (usuario.funcao === 'bolsista') {
+        checkbox.prop('checked', true);
+      }
+
+      checkboxCell.append(checkbox);
+      row.append(checkboxCell, cpfCell, pnomeCell, funcaoCell );
+      userList.append(row);
+    }
+  }
+
+  // Adicionar evento de clique às checkboxes
+  $('input[name="bolsista-checkbox"]').click(function() {
+    var isChecked = $(this).prop('checked');
+    var funcaoCell = $(this).closest('tr').find('td:eq(3)');
+
+    if (isChecked) {
+      funcaoCell.text('bolsista');
+    } else {
+      funcaoCell.text('aluno');
+    }
+  });
+}
+
+
+$(document).ready(function() {
+  $('#gerenciar-bolsista').click(function() {
+    obterUsuarios();
+    $('.bolsista-container').show();
+  });
+
+  $('#submit-button').click(function() {
+    var checkboxes = $('input[name="bolsista-checkbox"]');
+    var usuarios = [];
+
+    checkboxes.each(function() {
+      var cpf = $(this).val();
+      var funcao = $(this).prop('checked') ? 'bolsista' : 'aluno';
+      var email = $(this).closest('tr').find('td:eq(3)').text();
+      var nome = $(this).closest('tr').find('td:eq(2)').text();
+      var senha = $(this).closest('tr').find('td:eq(4)').text();
+      var status = $(this).closest('tr').find('td:eq(5)').text();
+      var sobrenome = $(this).closest('tr').find('td:eq(6)').text();
+
+      console.log($(this).closest('tr'))
+
+      var usuario = {
+        cpf: cpf,
+        email: email,
+        funcao: funcao,
+        pnome: nome,
+        senha: senha,
+        status: status,
+        unome: sobrenome
+      };
+
+ 
+      usuarios.push(usuario);
+    });
+
+    // Enviar as requisições individualmente em sequência
+    enviarRequisicao(usuarios, 0);
+  });
+});
+
+function enviarRequisicao(usuarios, index) {
+  if (index >= usuarios.length) {
+    console.log("Todas as requisições foram enviadas com sucesso!");
+    return;
+  }
+
+  var usuario = usuarios[index];
+
+  $.ajax({
+    url: "http://localhost:8080/api/usuario/update",
+    type: "POST",
+    dataType: "json",
+    contentType: "application/json",
+    data: JSON.stringify(usuarios),
+    success: function(response) {
+      console.log("Função atualizada com sucesso para o usuário:", usuario.cpf);
+
+      // Chamar a próxima requisição
+      enviarRequisicao(usuarios, index + 1);
+    },
+    error: function(xhr, status, error) {
+      console.error("Erro ao atualizar função para o usuário:", usuario.cpf, xhr.status);
+    }
+  });
+}
+
+function getTodosAgendamento(){
+  $.ajax({
+    url: 'http://localhost:8080/api/agendamento',
+    type: 'GET',
+    dataType: 'json',
+    success: function(response) {
+      exibirTodosAgendamentos(response);
+    },
+    error: function(xhr, status, erro) {
+      console.error('Erro ao obter agendamentos:', xhr.status);
+    }
+  });
+}
+function exibirTodosAgendamentos(agendamentos) {
+  const todosAgendamentosContainer = $('.todo-agendamentos-container');
+
+  todosAgendamentosContainer.empty();
+  console.log(todosAgendamentosContainer);
+  
+  agendamentos.forEach(function(agendamento) {
+    const agendamentosDiv = $('<div>').addClass('agendamentos');
+    const datasSpan = $('<span>').text('Data: ' + agendamento.data).append($('<br>'));
+    const iniciosSpan = $('<span>').text('Horario Inicio: ' + agendamento.horario_inicio).append($('<br>'));
+    const fimsSpan = $('<span>').text('Horario Fim: ' + agendamento.horario_fim).append($('<br>'));
+    const quadrasSpan = $('<span>').text('Quadra: ' + agendamento.quadra.modalidade).append($('<br>'));
+    const statussSpan = $('<span>').text('Status: ' + agendamento.status).append($('<br>'));
+
+    const cancelarButton = $('<button>').text('Cancela').addClass('cancelar-agendamentos');
+    cancelarButton.data('agendamento', agendamento);
+
+    const compareceuButton = $('<button>').text('Compareceu').addClass('compareceu-agendamento');
+    compareceuButton.data('agendamento', agendamento);
+
+    const naoCompareceuButton = $('<button>').text('Não Compareceu').addClass('nao-compareceu-agendamento');
+    naoCompareceuButton.data('agendamento', agendamento);
+
+    if(agendamento.status === 'ATIVO'){
+      agendamentosDiv.append(datasSpan, iniciosSpan, fimsSpan, quadrasSpan, statussSpan, cancelarButton, compareceuButton,naoCompareceuButton);
+      console.log(agendamentosDiv);
+      todosAgendamentosContainer.append(agendamentosDiv);
+    }else{
+      agendamentosDiv.append(datasSpan, iniciosSpan, fimsSpan, quadrasSpan, statussSpan);
+      console.log(agendamentosDiv);
+      todosAgendamentosContainer.append(agendamentosDiv);
+    }  
+  });
+}
+// Função para modificar o status com base no botão clicado
+function modificarStatus() {
+  var status = 'ATIVO'
+  // Código para modificar o status de acordo com o botão clicado
+  $('.todo-agendamentos-container').on('click', 'button', function() {
+    // Verifique o texto do botão clicado
+    var buttonText = $(this).text();
+  
+    // Modifique o status com base no botão clicado
+    switch (buttonText) {
+      case 'Cancela':
+        status = 'CANCELADO';
+        break;
+      case 'Compareceu':
+        status = 'COMPARECEU';
+        break;
+      case 'Não Compareceu':
+        status = 'NAO_COMPARECEU';
+        break;
+      default:
+        break;
+    }
+    const agendamento = $(this).data('agendamento');
+    const url = 'http://localhost:8080/api/agendamento' ;
+
+    const agenda = {
+      id_agendamento: agendamento.id_agendamento,
+      horario_inicio: agendamento.horario_inicio,
+      horario_fim: agendamento.horario_fim,
+      data: agendamento.data,
+      status: status,
+      usuario: agendamento.usuario,
+      quadra: agendamento.quadra
+
+    };
+    $.ajax({
+      url: url,
+      type: 'PUT',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(agenda),
+      success: function(response) {
+        console.log('Agendamento alterado com sucesso');
+      },
+      error: function(xhr, status, erro) {
+        console.error('Erro ao excluir agendamento:', xhr.status);
+        getTodosAgendamento(); // Atualiza a lista de blocos exibidos
+      }
+    });
+
+  });
+}
+
+// Adicione o manipulador de eventos de clique aos botões
+
+
+getTodosAgendamento();
+modificarStatus();

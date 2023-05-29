@@ -79,6 +79,29 @@ public class UsuarioDAO {
         }
 
     }
+
+
+    public void updateUser(List<Usuario> usuario) throws UpdateException {
+
+        try {
+            for(Usuario u : usuario) {
+                Usuario usuario1 = select(u.getCpf());
+                update.setString(1, usuario1.getPnome());
+                update.setString(2, usuario1.getUnome());
+                update.setString(3, usuario1.getEmail());
+                update.setString(4, usuario1.getSenha());
+                update.setString(5, usuario1.getStatus());
+                update.setString(6, u.getFuncao());
+                update.setString(7, u.getCpf());
+                update.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new UpdateException("Usuario");
+        } catch (SelectException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     
     public Usuario select(String cpf) throws SelectException {
 

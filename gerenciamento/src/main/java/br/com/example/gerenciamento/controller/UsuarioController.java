@@ -44,6 +44,11 @@ UsuarioController {
 	public void adicionaUsuario(@RequestBody Usuario usuario) throws SelectException, InsertException {
 		sistema.insereUsuario(usuario);
 	}
+
+	@PostMapping("/usuario/update")
+	public void updateUser(@RequestBody List<Usuario> usuario) throws SelectException, InsertException, UpdateException {
+		sistema.updateUser(usuario);
+	}
 	@PutMapping("/usuario")
 	public void atualizaUsuario(@RequestBody Usuario usuario) throws UpdateException {
 		sistema.atualizaUsuario(usuario);	
