@@ -49,17 +49,23 @@ header {
 }
 
 .content {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   padding: 10px;
 }
 
 .footer {
+  bottom: 0;
+  left: 0;
+  width: 100%;
   background-color: #4CAF50;
-  height: 50px;
+  height: 25px;
   color: white;
   text-align: center;
   line-height: 50px;
   font-size: 16px;
+  padding: 20px;
 }
 
 .content {
@@ -71,6 +77,8 @@ header {
     width: 100%;
     overflow-x: auto;
     display: none;
+    flex-direction: column;
+
   }
   .bloco-container input,
   .bloco-container button {
@@ -206,4 +214,124 @@ header {
   #equipamento-container {
     border: 1px solid black;
     padding: 10px;
+  }
+
+  .horario-marcado {
+    background-color: yellow;
+    /* Outros estilos de destaque */
+  }
+  .calendar-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    width: 50%;
+  }
+  
+  .calendar-container label {
+    font-weight: bold;
+  }
+  
+  .calendar-container select,
+  .calendar-container input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .calendar-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .calendar-container button:hover {
+    background-color: #45a049;
+  }
+  .celula-selecionada {
+    background-color: gray; /* Defina a cor de fundo desejada */
+  }
+  
+
+  .bolsista-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    width: 50%;
+  }
+  
+  .bolsista-container label {
+    font-weight: bold;
+  }
+  
+  .bolsista-container select,
+  .bolsista-container input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .bolsista-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .bolsista-container button:hover {
+    background-color: #45a049;
+  }
+
+  .admin-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    width: 50%;
+  }
+  
+  .admin-container label {
+    font-weight: bold;
+  }
+  
+  .admin-container select,
+  .admin-container input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .admin-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .admin-container button:hover {
+    background-color: #45a049;
+  }
+  #agendamentos-container {
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .meus-agendamentos-container{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
   }

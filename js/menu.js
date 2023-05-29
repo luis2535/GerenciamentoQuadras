@@ -25,11 +25,19 @@ if (usuario !== null) {
     $('#gerenciar-quadras').show();
     $('#gerenciar-equipamentos').show();
     $('#gerenciar-usuarios').show();
+    $('.admin-container').show();
+
   } else {
     $('#gerenciar-blocos').hide();
     $('#gerenciar-quadras').hide();
     $('#gerenciar-equipamentos').hide();
     $('#gerenciar-usuarios').hide();
+    $('.admin-container').hide();
+  }
+  if (isAdmin || isBolsista){
+    $('.bolsista-container').show();
+  }else{
+    $('.bolsista-container').hide();
   }
 
   
@@ -50,6 +58,8 @@ showCalendarButton.addEventListener('click', function() {
   userContainer.style.display = 'none';
   const equipamentoContainer = document.querySelector('.equipamentos-container');
   equipamentoContainer.style.display = 'none';
+  const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
+  meuAgendamentoContainer.style.display = 'none';
 });
 
 const blocoButton = document.getElementById('gerenciar-blocos');
@@ -64,6 +74,8 @@ blocoButton.addEventListener('click', function() {
   userContainer.style.display = 'none';
   const equipamentoContainer = document.querySelector('.equipamentos-container');
   equipamentoContainer.style.display = 'none';
+  const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
+  meuAgendamentoContainer.style.display = 'none';
 });
 
 const gerenciarQuadrasButton = document.getElementById('gerenciar-quadras');
@@ -78,6 +90,8 @@ gerenciarQuadrasButton.addEventListener('click', function() {
   userContainer.style.display = 'none';
   const equipamentoContainer = document.querySelector('.equipamentos-container');
   equipamentoContainer.style.display = 'none';
+  const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
+  meuAgendamentoContainer.style.display = 'none';
 
   carregarBlocos();
 });
@@ -94,6 +108,8 @@ gerenciarUsuariosButton.addEventListener('click', function() {
   quadraContainer.style.display = 'none';
   const equipamentoContainer = document.querySelector('.equipamentos-container');
   equipamentoContainer.style.display = 'none';
+  const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
+  meuAgendamentoContainer.style.display = 'none';
 });
 
 const gerenciarEquipamentosButton = document.getElementById('gerenciar-equipamentos');
@@ -108,8 +124,26 @@ gerenciarEquipamentosButton.addEventListener('click', function() {
   quadraContainer.style.display = 'none';
   const equipamentoContainer = document.querySelector('.equipamentos-container');
   equipamentoContainer.style.display = 'block';
+  const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
+  meuAgendamentoContainer.style.display = 'none';
 });
+const meusAgendamentosButton = document.getElementById('meus-agendamentos');
+meusAgendamentosButton.addEventListener('click', function(){
+  const userContainer = document.querySelector('.user-container');
+  userContainer.style.display = 'none';
+  const gerenciarBloco = document.querySelector('.bloco-container');
+  gerenciarBloco.style.display = 'none';
+  const calendarContainer = document.querySelector('.calendar');
+  calendarContainer.style.display = 'none';
+  const quadraContainer = document.querySelector('.quadra-container');
+  quadraContainer.style.display = 'none';
+  const equipamentoContainer = document.querySelector('.equipamentos-container');
+  equipamentoContainer.style.display = 'none';
+  const meuAgendamentoContainer = document.querySelector('.meus-agendamentos-container');
+  meuAgendamentoContainer.style.display = 'block';
 
+  getMeusAgendamentos();
+});
 
 // Chama a função checkLogin ao carregar a página
 window.addEventListener('load', checkLogin);
@@ -120,39 +154,9 @@ function encerrarSessao(){
     sessionStorage.removeItem('isAdmin');
     window.location.href = 'login.html';
   }
-// Função para preencher a grade do calendário
-// Função para preencher a grade do calendário
-// Função para preencher a grade do calendário
-function fillCalendar() {
-    const calendarBody = document.getElementById('calendar-body');
-  
-    // Loop para as horas das 7h às 23h
-    for (let hour = 7; hour <= 23; hour++) {
-      const row = document.createElement('tr');
-  
-      // Célula com o horário
-      const hourCell = document.createElement('td');
-      hourCell.textContent = `${hour}:00 - ${hour + 1}:00`;
-      row.appendChild(hourCell);
-  
-      // Loop para os próximos 7 dias
-      for (let i = 0; i < 7; i++) {
-        const cell = document.createElement('td');
-        row.appendChild(cell);
-  
-        // Adicionar evento de clique à célula vazia
-        cell.addEventListener('click', function() {
-          // Ação a ser executada ao selecionar a célula
-          console.log(`Selecionado: Dia ${i + 1}, Hora ${hour}:00 - ${hour + 1}:00`);
-        });
-      }
-  
-      calendarBody.appendChild(row);
-    }
-  }
-  
-  // Chamar a função para preencher o calendário
-  fillCalendar();
+
+
+
   
   function adicionarBloco(){
     document.getElementById('adicionar-bloco-button').addEventListener('click', function(event){
@@ -532,3 +536,405 @@ function excluirEquipamento(){
 adicionarEquipamento();
 getEquipamentos();
 excluirEquipamento();
+
+
+function getQuadrasSelect() {
+  $.ajax({
+    url: 'http://localhost:8080/api/quadra',
+    type: 'GET',
+    dataType: 'json',
+    success: function(response) {
+      const selectQuadras = document.getElementById('select-quadras');
+
+      response.forEach(function(quadra) {
+        $(selectQuadras).append($('<option>',{
+          value: quadra.id_quadra,
+          text: quadra.modalidade
+        }))
+      });
+      selectQuadras.addEventListener('change', function() {
+        const quadraSelecionada = selectQuadras.value;
+        getAgendamento(quadraSelecionada);
+      });
+
+      // Carregar agendamentos iniciais para a quadra selecionada (primeira opção)
+      const quadraSelecionada = selectQuadras.value;
+      getAgendamento(quadraSelecionada);
+      
+    },
+    error: function(xhr, status, erro) {
+      console.error('Erro ao obter quadras:', xhr.status);
+    }
+  });
+}
+function getEquipamentoSelect() {
+  $.ajax({
+    url: 'http://localhost:8080/api/equipamento',
+    type: 'GET',
+    dataType: 'json',
+    success: function(response) {
+      const selectEquips = document.getElementById('select-equips');
+
+      response.forEach(function(equip) {
+        $(selectEquips).append($('<option>',{
+          value: equip.id_equipamento,
+          text: equip.tipo
+        }))
+      });
+      
+      
+    },
+    error: function(xhr, status, erro) {
+      console.error('Erro ao obter equipamentos:', xhr.status);
+    }
+  });
+}
+let ultimoDia = null;
+let ultimoHorario = null;
+function fillCalendar(agendamentos) {
+  const calendarBody = document.getElementById('calendar-body');
+  const today = new Date();
+  console.log(agendamentos);
+
+   // Limpar o conteúdo do calendarBody
+   calendarBody.innerHTML = '';
+  // Criação da linha de cabeçalho com horários
+  const headerRow = document.createElement('tr');
+  const hourHeader = document.createElement('th');
+  hourHeader.textContent = 'Hora';
+  headerRow.appendChild(hourHeader);
+
+  // Loop para os próximos 7 dias
+  for (let i = 0; i < 7; i++) {
+    const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+    const dayString = `${day.getDate().toString().padStart(2, '0')}/${(day.getMonth() + 1).toString().padStart(2, '0')}`;
+    const dayHeader = document.createElement('th');
+    dayHeader.textContent = dayString;
+    headerRow.appendChild(dayHeader);
+  }
+
+  calendarBody.appendChild(headerRow);
+
+  // Loop para as horas das 7h às 23h
+  for (let hour = 7; hour <= 23; hour++) {
+    const row = document.createElement('tr');
+
+    // Célula com o horário
+    const hourCell = document.createElement('td');
+    hourCell.textContent = `${hour}:00 - ${hour + 1}:00`;
+    row.appendChild(hourCell);
+
+    // Loop para os próximos 7 dias
+    for (let i = 0; i < 7; i++) {
+      const cell = document.createElement('td');
+      row.appendChild(cell);
+
+      const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+      const month = (day.getMonth() + 1).toString().padStart(2, '0');
+      const dayOfMonth = day.getDate().toString().padStart(2, '0');
+      const dayString = `${month}-${dayOfMonth}`;
+
+      // Verificar se o horário e a data correspondem a algum agendamento
+      let agendamentoMarcado = null;
+      for (let j = 0; j < agendamentos.length; j++) {
+        const agendamento = agendamentos[j];
+        if (agendamento.horario_inicio === hour + ':00' && agendamento.data.trim() === '2023-' + dayString && agendamento.status === 'ATIVO') {
+          agendamentoMarcado = agendamento;
+          break;
+        }
+      }
+
+      // Adicionar a palavra "Reservado" na célula correspondente
+      if (agendamentoMarcado) {
+        const reservadoDiv = document.createElement('div');
+        reservadoDiv.textContent = 'Reservado';
+        cell.appendChild(reservadoDiv);
+        cell.classList.add('horario-marcado')
+      }
+
+      // Adicionar evento de clique à célula vazia
+      cell.addEventListener('click', function() {
+        // Remover a classe 'celula-selecionada' de todas as células antes de adicionar à célula atual
+        const cells = calendarBody.querySelectorAll('td');
+        cells.forEach(function(cell) {
+          cell.classList.remove('celula-selecionada');
+        });
+    
+        // Adicionar a classe 'celula-selecionada' à célula atual
+        cell.classList.add('celula-selecionada');
+    
+        // Ação a ser executada ao selecionar a célula
+        // selecionarCelula(dayString, hour);
+        ultimoDia = dayString;
+        ultimoHorario = hour;
+      });
+    }
+    
+
+    calendarBody.appendChild(row);
+  }
+  
+}
+// function selecionarCelula(dia, horario) {
+//   console.log('Selecionado: Dia', dia, 'Horário', horario + ':00 - ' + (horario + 1) + ':00');
+//   // Realize outras ações necessárias com o dia e horário selecionados
+//   fazerAgendamento(dia, horario);
+// }
+
+
+
+
+
+
+function getAgendamento(id_quadra){
+  $.ajax({
+    url: 'http://localhost:8080/api/agendamento',
+    type: 'GET',
+    dataType: 'json',
+    success: function(response){
+      const agendamentosQuadra = [];
+      // Filtrar os agendamentos da quadra específica
+      response.forEach(function(agendamento) {
+        if (parseInt(agendamento.quadra.id_quadra) === parseInt(id_quadra)) {
+          agendamentosQuadra.push(agendamento);
+        }
+      });
+
+      console.log(agendamentosQuadra);
+      fillCalendar(agendamentosQuadra);
+    },
+    error: function(xhr, status, erro) {
+      console.error('Erro ao obter agendamento:', xhr.status);
+    }
+  });
+}
+function fazerAgendamento() {
+  const marcarAgendamentoButton = document.getElementById('marcar-agendamento-button');
+  marcarAgendamentoButton.addEventListener('click', function() {
+    const quadraSelecionada = document.getElementById('select-quadras').value;
+    const equipamentoSelecionado = document.getElementById('select-equips').value;
+    const quantidade = document.getElementById('qtd').value;
+
+    const horario_inicio = ultimoHorario + ':00';
+    const horario_fim = (ultimoHorario + 1) + ':00';
+    const data = '2023-' + ultimoDia;
+    const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+    var quadra = {
+      id_quadra: quadraSelecionada
+    };
+    var agendamento = {
+      id_agendamento: 1,
+      horario_inicio: horario_inicio,
+      horario_fim: horario_fim,
+      data: data,
+      status: 'ATIVO',
+      usuario: usuario,
+      quadra: quadra
+    };
+
+    console.log(agendamento);
+  $.ajax({
+    url: "http://localhost:8080/api/agendamento/" + equipamentoSelecionado + "/" + quantidade,
+    type: "POST",
+    dataType:"json",
+    contentType: "application/json",
+    data: JSON.stringify(agendamento),
+    success: function(response){
+      console.log("Quadra adicionada com sucesso");
+
+    },
+    error: function(xhr, status, erro){
+      console.error("Erro ao adicionar quadra:", xhr.status);
+  }
+  })
+  });
+}
+// Chamar a função para preencher o calendário
+function agendarParaOutroCpf(){
+  {
+    const outroAgendamentoButton = document.getElementById('marcar-paraOutro-button');
+    outroAgendamentoButton.addEventListener('click', function() {
+      const quadraSelecionada = document.getElementById('select-quadras').value;
+      const equipamentoSelecionado = document.getElementById('select-equips').value;
+      const quantidade = document.getElementById('qtd').value;
+  
+      const horario_inicio = ultimoHorario + ':00';
+      const horario_fim = (ultimoHorario + 1) + ':00';
+      const data = '2023-' + ultimoDia;
+      const cpf = document.getElementById('alter-cpf').value;
+      var usuario ={
+        cpf: cpf
+      };
+      var quadra = {
+        id_quadra: quadraSelecionada
+      };
+      var agendamento = {
+        id_agendamento: 1,
+        horario_inicio: horario_inicio,
+        horario_fim: horario_fim,
+        data: data,
+        status: 'ATIVO',
+        usuario: usuario,
+        quadra: quadra
+      };
+  
+      console.log(agendamento);
+    $.ajax({
+      url: "http://localhost:8080/api/agendamento/" + equipamentoSelecionado + "/" + quantidade,
+      type: "POST",
+      dataType:"json",
+      contentType: "application/json",
+      data: JSON.stringify(agendamento),
+      success: function(response){
+        console.log("Quadra adicionada com sucesso");
+  
+      },
+      error: function(xhr, status, erro){
+        console.error("Erro ao adicionar quadra:", xhr.status);
+    }
+    })
+    });
+  }
+
+}
+
+function agendarEvento() {
+  const marcarEventoButton = document.getElementById('marcar-evento-button');
+  marcarEventoButton.addEventListener('click', function() {
+    const nomeEvento = document.getElementById('evento-nome').value;
+
+    const horario_inicio = ultimoHorario + ':00';
+    const horario_fim = (ultimoHorario + 1) + ':00';
+    const data = '2023-' + ultimoDia;
+    const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+    
+    var admin = {
+      cpf: usuario.cpf,
+      email: usuario.email,
+      funcao: usuario.funcao,
+      pnome: usuario.pnome,
+      senha: usuario.senha,
+      status: usuario.status,
+      unome: usuario.unome,
+      id_admin: 1
+    }
+    var quadra = {
+      id_quadra: 1 
+    };
+    var evento = {
+      id_evento: 1,
+      data: data,
+      horario_inicio: horario_inicio,
+      horario_fim: horario_fim,
+      status: 'ATIVO',
+      nome: nomeEvento,
+      usuario: admin,
+      quadra: quadra
+    };
+    console.log(evento);
+
+  $.ajax({
+    url: "http://localhost:8080/api/evento/" + usuario.cpf,
+    type: "POST",
+    dataType:"json",
+    contentType: "application/json",
+    data: JSON.stringify(evento),
+    success: function(response){
+      console.log("Evento adicionada com sucesso");
+
+    },
+    error: function(xhr, status, erro){
+      console.error("Erro ao adicionar evento:", xhr.status);
+  }
+  })
+  });
+}
+getQuadrasSelect();
+getEquipamentoSelect();
+fazerAgendamento();
+agendarParaOutroCpf();
+agendarEvento();
+
+
+
+function getMeusAgendamentos() {
+  const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+  $.ajax({
+    url: 'http://localhost:8080/api/agendamento',
+    type: 'GET',
+    dataType: 'json',
+    success: function(response) {
+      const agendamentos = []; // Move a declaração da variável para fora do loop
+
+      response.forEach(function(agendamento) {
+        console.log(agendamento.usuario);
+        console.log(usuario);
+        if (agendamento.usuario.cpf === usuario.cpf) {
+          agendamentos.push(agendamento);
+        }
+      });
+      console.log(agendamentos);
+
+      exibirAgendamentos(agendamentos);
+    },
+    error: function(xhr, status, erro) {
+      console.error('Erro ao obter agendamentos:', xhr.status);
+    }
+  });
+}
+function exibirAgendamentos(agendamentos) {
+  const agendamentosContainer = $('#agendamentos-container');
+  agendamentosContainer.empty();
+console.log(agendamentosContainer);
+  
+  agendamentos.forEach(function(agendamento) {
+    const agendamentoDiv = $('<div>').addClass('agendamento');
+    const dataSpan = $('<span>').text('Data: ' + agendamento.data).append($('<br>'));
+    const inicioSpan = $('<span>').text('Horario Inicio: ' + agendamento.horario_inicio).append($('<br>'));
+    const fimSpan = $('<span>').text('Horario Fim: ' + agendamento.horario_fim).append($('<br>'));
+    const quadraSpan = $('<span>').text('Quadra: ' + agendamento.quadra.modalidade).append($('<br>'));
+    const statusSpan = $('<span>').text('Status: ' + agendamento.status).append($('<br>'));
+    if(agendamento.status === 'ATIVO'){
+      const cancelaButton = $('<button>').text('Cancela').addClass('cancelar-agendamento');
+      cancelaButton.data('agendamento', agendamento);
+      agendamentoDiv.append(dataSpan, inicioSpan, fimSpan, quadraSpan, statusSpan, cancelaButton);
+      agendamentosContainer.append(agendamentoDiv);
+    }
+    agendamentoDiv.append(dataSpan, inicioSpan, fimSpan, quadraSpan, statusSpan);
+    agendamentosContainer.append(agendamentoDiv);
+  });
+}
+function cancelarAgendamento(){
+  $(document).on('click', '.cancelar-agendamento', function() {
+    const agendamento = $(this).data('agendamento');
+    const url = 'http://localhost:8080/api/agendamento';
+
+    const agenda = {
+      id_agendamento: agendamento.id_agendamento,
+      horario_inicio: agendamento.horario_inicio,
+      horario_fim: agendamento.horario_fim,
+      data: agendamento.data,
+      status: 'CANCELADO',
+      usuario: agendamento.usuario,
+      quadra: agendamento.quadra
+
+    };
+    $.ajax({
+      url: url,
+      type: 'PUT',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(agenda),
+      success: function(response) {
+        console.log('Agendamento cancelado com sucesso');
+      },
+      error: function(xhr, status, erro) {
+        console.error('Erro ao excluir agendamento:', xhr.status);
+        getMeusAgendamentos(); // Atualiza a lista de blocos exibidos
+      }
+    });
+  });
+}
+
+
+getMeusAgendamentos();

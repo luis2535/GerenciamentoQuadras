@@ -30,9 +30,11 @@ AgendamentoController {
 		return sistema.buscaAgendamento(id_agendamento);
 	}
 	
-	@PostMapping("/agendamento")
-	public void adicionaAgendamento(@RequestBody Reserva reserva) throws SelectException, InsertException {
-		sistema.insereAgendamento(reserva);
+	@PostMapping("/agendamento/{id_equip}/{quantidade}")
+	public void adicionaAgendamento(@RequestBody Agendamento agendamento, @PathVariable int id_equip, @PathVariable int quantidade) throws SelectException, InsertException {
+	    Equipamento equip = new Equipamento(id_equip, null, null);
+	    Reserva reserva = new Reserva(1, agendamento, equip, quantidade);
+	    sistema.insereAgendamento(reserva);
 	}
 	@PutMapping("/agendamento")
 	public void atualizaAgendamento(@RequestBody Agendamento agendamento) throws UpdateException {

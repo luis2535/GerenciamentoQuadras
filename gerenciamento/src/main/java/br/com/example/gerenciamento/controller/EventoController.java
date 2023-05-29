@@ -30,8 +30,13 @@ EventoController {
 		return sistema.buscaEvento(id_evento);
 	}
 	
-	@PostMapping("/evento")
-	public void adicionaEvento(@RequestBody Evento evento) throws SelectException, InsertException {
+	@PostMapping("/evento/{cpf}")
+	public void adicionaEvento(@RequestBody Evento evento, @PathVariable String cpf) throws SelectException, InsertException {
+		Admin admin = sistema.buscaServidor(cpf);
+		System.out.println(evento);
+		List<Quadra> quadras = sistema.buscaQuadras();
+		evento.setQuadras(quadras);
+		evento.setServidor(admin);
 		sistema.insereEvento(evento);
 	}
 	@PutMapping("/evento")

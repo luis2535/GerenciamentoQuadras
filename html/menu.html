@@ -18,31 +18,62 @@
       <button class="menu-button" id="gerenciar-equipamentos">Gerenciar Equipamentos</button>
       <button class="menu-button" id="gerenciar-usuarios">Cadastrar Usuários</button>
       <button class="menu-button" id="show-calendar-button">Mostrar Calendario</button>
-      
-      <button class="menu-button">Botão 2</button>
+      <button class="menu-button" id="meus-agendamentos">Meus Agendamentos</button>
+      <button class="menu-button" id="gerenciar-agendamentos">Gerenciar Agendamentos</button>
       <button onclick="encerrarSessao()" class="menu-button">Logout</button>
       <!-- Adicione mais botões conforme necessário -->
     </div>
     <div class="content">
-      <div class="calendar">
-        <table>
-          <thead>
-            <tr>
-              <th>Hora</th>
-              <th>Dia 1</th>
-              <th>Dia 2</th>
-              <th>Dia 3</th>
-              <th>Dia 4</th>
-              <th>Dia 5</th>
-              <th>Dia 6</th>
-              <th>Dia 7</th>
-            </tr>
-          </thead>
-          <tbody id="calendar-body">
-            <!-- Os dados serão preenchidos dinamicamente aqui -->
-          </tbody>
-        </table>
-      </div>
+  <div class="calendar">
+    <table>
+      <thead>
+        <tr>
+          <th>Hora</th>
+          <th>Dia 1</th>
+          <th>Dia 2</th>
+          <th>Dia 3</th>
+          <th>Dia 4</th>
+          <th>Dia 5</th>
+          <th>Dia 6</th>
+          <th>Dia 7</th>
+        </tr>
+      </thead>
+      <tbody id="calendar-body">
+        <!-- Os dados serão preenchidos dinamicamente aqui -->
+      </tbody>
+    </table>
+    
+    <div class="calendar-container">
+      <label for="select-quadras">Selecione a Quadra:</label>
+      <select id="select-quadras"></select><br>
+      <label for="select-equips">Selecionar Equipamento:</label><br>
+      <select id="select-equips"></select>
+      <label for="qtd-equips">Quantidade do Equipamento</label>
+      <input type="text" id="qtd" placeholder="Quantidade">
+      <button id="marcar-agendamento-button">Marcar Agendamento</button><br>
+    </div>
+    <div class="bolsista-container">
+      <label for="cpf-usuario">Digite o CPF</label>
+        <input type="text" id="alter-cpf" placeholder="CPF">
+        <button id="marcar-paraOutro-button">Marcar Agendamento</button><br>
+    </div>
+    <div class="admin-container">
+      <label for="nome-evento">Digite o nome do Evento</label>
+        <input type="text" id="evento-nome" placeholder="Nome do Evento">
+        <button id="marcar-evento-button">Marcar Evento</button><br>
+    </div>
+  </div>
+  
+  <div id="calendario-container">
+    <div id="calendario-quadra" class="calendario-quadra"></div>
+  </div>
+</div>
+
+      
+      
+      
+
+      
       <div class="bloco-container">
         <p>Nome do Bloco:</p>
         <input type="text" id="nome-bloco" placeholder="Nome do Bloco">
@@ -100,7 +131,9 @@
           <div id="equipamento-container"></div>
         </div>
       
-      
+      <div class="meus-agendamentos-container">
+        <h2>Meus Agendamentos</h2>
+      </div>
 
       <!-- Aqui é onde aparecerão as funções realizadas pelos botões -->
     </div>
