@@ -1174,6 +1174,7 @@ function enviarRequisicao(usuarios, index) {
   }
 
   var usuario = usuarios[index];
+  console.log(usuarios)
 
   $.ajax({
     url: "http://localhost:8080/api/usuario/update",

@@ -86,6 +86,7 @@ public class UsuarioDAO {
         try {
             for(Usuario u : usuario) {
                 Usuario usuario1 = select(u.getCpf());
+                System.out.println(usuario1);
                 update.setString(1, usuario1.getPnome());
                 update.setString(2, usuario1.getUnome());
                 update.setString(3, usuario1.getEmail());

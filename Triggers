@@ -157,13 +157,15 @@ EXECUTE FUNCTION verificar_horarios();
 CREATE OR REPLACE FUNCTION atualizar_bolsista()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.funcao ILIKE 'aluno' THEN
+    IF (NEW.funcao ILIKE 'aluno') THEN
         DELETE FROM Bolsista WHERE cpf = NEW.cpf;
-    ELSIF NEW.funcao ILIKE 'bolsista' THEN
-        INSERT INTO Bolsista (cpf, pnome, unome, email, senha, status, funcao)
-        VALUES (NEW.cpf, NEW.pnome, NEW.unome, NEW.email, NEW.senha, NEW.status, NEW.funcao);
-        RETURN NULL;
+    ELSIF (NEW.funcao ILIKE 'bolsista') THEN
+        IF NOT EXISTS (SELECT 1 FROM Bolsista WHERE cpf = NEW.cpf) THEN
+            INSERT INTO Bolsista (cpf, pnome, unome, email, senha, status, funcao)
+            VALUES (NEW.cpf, NEW.pnome, NEW.unome, NEW.email, NEW.senha, NEW.status, NEW.funcao);
+        END IF;
     END IF;
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -172,3 +174,4 @@ CREATE TRIGGER trigger_atualizar_bolsista
 AFTER INSERT OR UPDATE OF funcao ON Usuario
 FOR EACH ROW
 EXECUTE FUNCTION atualizar_bolsista();
+

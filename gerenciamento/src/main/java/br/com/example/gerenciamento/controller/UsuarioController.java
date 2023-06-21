@@ -47,6 +47,7 @@ UsuarioController {
 
 	@PostMapping("/usuario/update")
 	public void updateUser(@RequestBody List<Usuario> usuario) throws SelectException, InsertException, UpdateException {
+		System.out.println(usuario);
 		sistema.updateUser(usuario);
 	}
 	@PutMapping("/usuario")
