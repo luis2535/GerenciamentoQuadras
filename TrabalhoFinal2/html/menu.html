@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reserva de Quadras</title>
+  <link rel="stylesheet" href="../css/menu.css">
+</head>
+<body>
+  <header>
+    <div class="user-info">
+      Usuário: <span id="nome-usuario"></span>
+      <p>Funcao: <span id = "tipo"></span></p>
+    </div>
+  </header>
+  <div class="container">
+    <div class="menu">
+      <div class="menu-body">
+        <button class="menu-button" id="gerenciar-blocos">Gerenciar Blocos</button>
+        <button class="menu-button" id="gerenciar-quadras">Gerenciar Quadras</button>
+        <button class="menu-button" id="gerenciar-equipamentos">Gerenciar Equipamentos</button>
+        <button class="menu-button" id="gerenciar-usuarios">Cadastrar Usuários</button>
+        <button class="menu-button" id="gerenciar-bolsista">Gerenciar Bolsista</button>
+        <button class="menu-button" id="show-calendar-button">Mostrar Calendario</button>
+        <button class="menu-button" id="meus-agendamentos">Meus Agendamentos</button>
+        <button class="menu-button" id="gerenciar-agendamentos">Gerenciar Agendamentos</button>
+        <button class="menu-button" id="menuPrincipal"> Voltar </button>
+        <button onclick="encerrarSessao()" class="menu-button">Logout</button>
+      </div>
+
+      <!-- Adicione mais botões conforme necessário -->
+    </div>
+    <div class="content">
+      <div class="calendar">
+        <table>
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th>Dia 1</th>
+              <th>Dia 2</th>
+              <th>Dia 3</th>
+              <th>Dia 4</th>
+              <th>Dia 5</th>
+              <th>Dia 6</th>
+              <th>Dia 7</th>
+            </tr>
+          </thead>
+          <tbody id="calendar-body">
+            <!-- Os dados serão preenchidos dinamicamente aqui -->
+          </tbody>
+        </table>
+        
+        <div class="calendar-container">
+          <label for="select-quadras">Selecione a Quadra:</label>
+          <select id="select-quadras"></select><br>
+          <label for="select-equips">Selecionar Equipamento:</label><br>
+          <select id="select-equips"></select>
+          <label for="qtd-equips">Quantidade do Equipamento</label>
+          <input type="text" id="qtd" placeholder="Quantidade">
+          <button id="marcar-agendamento-button">Marcar Agendamento</button><br>
+        </div>
+        <div class="bolsista-funcao">
+          <label for="cpf-usuario">Digite o CPF</label>
+            <input type="text" id="alter-cpf" placeholder="CPF">
+            <button id="marcar-paraOutro-button">Marcar Agendamento</button><br>
+        </div>
+        <div class="admin-container">
+          <label for="nome-evento">Digite o nome do Evento</label>
+            <input type="text" id="evento-nome" placeholder="Nome do Evento">
+            <button id="marcar-evento-button">Marcar Evento</button><br>
+        </div>
+      </div>
+      
+      <div id="calendario-container">
+        <div id="calendario-quadra" class="calendario-quadra"></div>
+      </div>
+    </div>
+    <div class="bloco-container">
+            <h2>Gerenciamento de Blocos</h2>
+            <p>Nome do Bloco:</p>
+            <input type="text" id="nome-bloco" placeholder="Nome do Bloco">
+            <p>Descrição do Bloco:</p>
+            <input type="text" id="descricao-bloco" placeholder="Descrição do Bloco">
+            <button id="adicionar-bloco-button">Adicionar Bloco</button>
+            <div id="blocos-container"></div>
+          </div>
+          <div class="quadra-container">
+            <h2>Gerenciamento de Quadras</h2>
+            <p>Modalidade da Quadra:</p>
+            <input type="text" id="modalidade-quadra" placeholder="Modalidade da Quadra">
+            <p>Descrição da Quadra:</p>
+            <input type="text" id="descricao-quadra" placeholder="Descrição da Quadra">
+            <p>Bloco:</p>
+            <select id="select-bloco">
+              <!-- Os dados dos blocos serão preenchidos dinamicamente aqui -->
+            </select>
+            <button id="adicionar-quadra-button">Adicionar Quadra</button>
+            <div class="quadras-container"></div>
+          </div>
+            <div class="user-container">
+            <h2>Cadastrar Usuários</h2>
+            <form id="gerenciar-usuarios-form">
+              <label for="cpf">CPF:</label>
+              <input type="text" id="cpf" placeholder="CPF" required>
+              <label for="nome">Nome:</label>
+              <input type="text" id="nome" placeholder="Nome" required>
+              <label for="sobrenome">Sobrenome:</label>
+              <input type="text" id="sobrenome" placeholder="Sobrenome" required>
+              <label for="email">Email:</label>
+              <input type="email" id="email" placeholder="Email" required>
+              <label for="senha">Senha:</label>
+              <input type="password" id="senha" placeholder="Senha" required>
+              <label for="status">Status:</label>
+              <select id="status">
+                <option value="ATIVO">Ativo</option>
+                <option value="INATIVO">Inativo</option>
+              </select>
+              <label for="funcao">Função:</label>
+              <select id="funcao">
+                <option value="aluno">Aluno</option>
+                <option value="bolsista">Bolsista</option>
+              </select>
+              <button type="submit">Adicionar Usuário</button>
+            </form>
+          </div>
+    
+          <!--aqui é para add bolsista  -->
+          <div class="bolsista-container">
+            <div class="bolsista-container-body">
+              <h2>Adicionar Bolsista</h2>
+              <table id="bolsista-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>CPF</th>
+                    <th>Nome</th>
+                    <th>Função</th>
+                  </tr>
+                </thead>
+                <tbody id="user-list"></tbody>
+              </table>
+              <button id="submit-button" type="submit">Submit</button>
+            </div>
+          </div>
+          <div class="equipamentos-container">
+            <h2>Adicionar Equipamento</h2>
+                <p>Nome do Equipamento:</p>
+                <input type="text" id="nome-equip" placeholder="Nome do Equipamento">
+                <p>Descrição do Equipamento:</p>
+                <input type="text" id="descricao-equip" placeholder="Descrição do Equipamento">
+              <button id="adicionar-equip-button">Adicionar Equipamento</button>
+              <div id="equipamento-container"></div>
+            </div>
+          
+          <div class="meus-agendamentos-container">
+            <h2>Meus Agendamentos</h2>
+            <div class="agendamentos-container"></div>
+          </div>
+
+          <div class="gerenciar-agendamentos-container">
+            <h2>Gerenciar Agendamentos</h2>
+            <div class="todo-agendamentos-container"></div>
+          </div>
+
+          <div class="apresentacao">
+            <h2>Sistema de Gerenciamento de Quadras</h2>
+            <p>Trabalho da disciplina de Banco de Dados 2 realizado pelos alunos da UDESC: Luís Eduardo Bertelli e Vitor Melchioretto.</p>
+            <p>Nesse trabalho foram inseridas funções para gerenciar as quadras como inserção/remoção de Blocos, Quadras, Equipamentos e Usuários. Essas sendo mais especificas para Administradores
+              , assim como funções de marcar agendamentos e consultar os agendamentos marcados, liberadas para todos os usuários.
+            </p>
+            <p>Para o desenvolvimento desse trabalho foi usado a ferramenta Postgresql como banco de dados, Java para persistir o banco de dados, foi utilizada a biblioteca
+              SpringBoot para gerar os endpoints para conseguir executar as requisições e a interface gráfica foi desenvolvida utilizando HTML, CSS e JS.
+            </p>
+          </div>
+
+      <!-- Aqui é onde aparecerão as funções realizadas pelos botões -->
+    </div>
+  </div>
+  <div class="footer">
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../js/menu.js"></script>
+</body>
+</html>

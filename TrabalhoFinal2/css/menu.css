@@ -1,0 +1,451 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden; /* Impede a rolagem horizontal */
+}
+
+header {
+  background-color: #4CAF50;
+  height: 70px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.user-info {
+  background-color: #388E3C;
+  margin-right: 10px;
+  font-size: 16px;
+  border: 1px solid black;
+  padding: 7px;
+}
+
+.container {
+  display: flex;
+  height: calc(100vh - 70px);
+}
+
+.menu {
+  width: 18%;
+  background-color: #C0C0C0;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px; 
+
+}
+
+menu-body {
+  width: 100%;
+  padding: 30px;
+  
+}
+
+.menu-button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+  background-color: #45a049;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 10px;
+  position: relative;
+  display: none;
+}
+
+.footer {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #4CAF50;
+  height: 25px;
+  color: white;
+  text-align: center;
+  line-height: 50px;
+  font-size: 16px;
+  padding: 20px;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 10px;
+  }
+
+  .calendar {
+    width: 100%;
+    overflow-x: auto; 
+    display: none;
+    flex-direction: column;
+
+  }
+  .bloco-container input,
+  .bloco-container button {
+    width: 100%;
+    display: block;
+    margin-bottom: 25px;
+  }
+  .bloco-container{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+  }
+  
+  
+  #blocos-container {
+    border: 1px solid black;
+    padding: 10px;
+  }
+  
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  thead th {
+    background-color: #f2f2f2;
+  }
+  
+  tbody td {
+    background-color: #fff;
+  }
+  .quadra-container input,
+.quadra-container select,
+.quadra-container button {
+  width: 100%;
+  display: block;
+  margin-bottom: 25px;
+}
+
+.quadra-container {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
+}
+.apresentacao {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+#quadras-container {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.quadra-item {
+  margin-bottom: 20px;
+}
+
+.excluir-button {
+  display: inline-block;
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.excluir-button:hover {
+  background-color: #d32f2f;
+}
+.user-container {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
+}
+
+.user-container h2 {
+  margin-bottom: 10px;
+}
+
+.user-container form {
+  display: grid;
+  gap: 10px;
+}
+
+.user-container label {
+  font-weight: bold;
+}
+
+.user-container input[type="text"],
+.user-container input[type="email"],
+.user-container input[type="password"],
+.user-container select {
+  width: 100%;
+  padding: 5px;
+}
+
+.user-container button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.user-container button:hover {
+  background-color: #45a049;
+}
+.equipamentos-container input,
+  .equipamentos-container button {
+    width: 100%;
+    display: block;
+    margin-bottom: 25px;
+  }
+  .equipamentos-container{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+  }
+  
+  
+  #equipamento-container {
+    border: 1px solid black;
+    padding: 10px;
+  }
+
+  .horario-marcado {
+    background-color: yellow;
+    /* Outros estilos de destaque */
+  }
+  .calendar-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    width: 50%;
+  }
+  
+  .calendar-container label {
+    font-weight: bold;
+  }
+  
+  .calendar-container select,
+  .calendar-container input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .calendar-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .calendar-container button:hover {
+    background-color: #45a049;
+  }
+  .celula-selecionada {
+    background-color: gray; /* Defina a cor de fundo desejada */
+  }
+  
+
+  .bolsista-container {
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    width: 50%;
+    display:none;
+  }
+
+  .bolsista-container-body {
+    padding: 20px;
+  }
+
+  #submit-button {
+    margin-top: 10px;
+  }
+  
+  .bolsista-container label {
+    font-weight: bold;
+  }
+  
+  .bolsista-container select,
+  .bolsista-container input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .bolsista-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .bolsista-container button:hover {
+    background-color: #45a049;
+  }
+
+  .admin-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    width: 50%;
+  }
+  
+  .admin-container label {
+    font-weight: bold;
+  }
+  
+  .admin-container select,
+  .admin-container input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .admin-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .admin-container button:hover {
+    background-color: #45a049;
+  }
+  .agendamentos-container {
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .agendamento{
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .agendamentos{
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .meus-agendamentos-container {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+    overflow-y: auto; /* Habilita a barra de rolagem vertical */
+  }
+  .gerenciar-agendamentos-container {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+    overflow-y: auto; /* Habilita a barra de rolagem vertical */
+  }
+  .todo-agendamentos-container {
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .todo-agendamentos-container button {
+    width: calc(33.33% - 10px); /* Largura igual para os três botões */
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px; /* Espaçamento entre os botões */
+  }
+  
+  .todo-agendamentos-container button:last-child {
+    margin-right: 0; /* Remove a margem do último botão para evitar espaçamento extra */
+  }
+  
+  
+
+  
+  .hidden {
+    display: none;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+
+  
+  .bolsista-funcao {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    width: 50%;
+  }
+  
+  .bolsista-funcao label {
+    font-weight: bold;
+  }
+  
+  .bolsista-funcao select,
+  .bolsista-funcao input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .bolsista-funcao button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .bolsista-funcao button:hover {
+    background-color: #45a049;
+  }
+  

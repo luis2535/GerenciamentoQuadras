@@ -1,0 +1,177 @@
+-- Trigger para deixar determinado período reservado para eventos extraordinários
+
+CREATE OR REPLACE FUNCTION evento_extraordinario() RETURNS TRIGGER AS $$
+DECLARE
+    quadra RECORD;
+    agendamento_id INT;
+BEGIN
+    UPDATE Agendamento SET status = 'CANCELADO' WHERE data = new.data AND (
+        (horario_inicio::time <= new.horario_fim::time AND horario_fim::time >= new.horario_inicio::time) OR
+        (horario_inicio::time >= new.horario_inicio::time AND horario_inicio::time <= new.horario_fim::time)
+    );
+    
+    FOR quadra IN SELECT * FROM Quadra LOOP
+        SELECT nextval('agendamento_id_seq') INTO agendamento_id;
+        INSERT INTO Agendamento (id_agendamento, data, horario_inicio, horario_fim, status, cpf, id_quadra)
+        VALUES (agendamento_id, new.data, new.horario_inicio, new.horario_fim, 'ATIVO', new.cpf, quadra.id_quadra);
+    END LOOP;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER evento_extraordinario_trigger AFTER INSERT ON Evento FOR EACH ROW EXECUTE FUNCTION evento_extraordinario();
+
+
+insert into evento values (8, '2023-05-10', '13:00', '19:00', 'Ativo', 'EVENTO TESTE', 10363195980);
+select * from agendamento
+drop trigger evento_extraordinario on evento
+
+-- Trigger para ter que possuir 4 dias de antecedencia para marcar um agendamento
+
+CREATE OR REPLACE FUNCTION agendar_antecedencia() RETURNS TRIGGER AS $$
+BEGIN
+	IF TO_DATE(new.data, 'YYYY-MM-DD') < current_date + INTERVAL '4 days' THEN
+		RAISE EXCEPTION 'Agendamento não permitido com menos de 4 dias de antecedência';
+	END IF;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER agendar_antecedencia_trigger
+BEFORE INSERT ON Agendamento
+FOR EACH ROW
+EXECUTE FUNCTION agendar_antecedencia();
+
+-- Trigger para não deixar registrar repetido
+CREATE OR REPLACE FUNCTION evento_repetido() RETURNS TRIGGER AS $$
+DECLARE
+    conflicting_event RECORD;
+BEGIN
+    -- Verificar se existe algum evento conflitante
+    SELECT INTO conflicting_event
+        *
+    FROM evento
+    WHERE  status = 'ATIVO'
+        AND (
+            (NEW.horario_inicio::time >= horario_inicio::time AND NEW.horario_inicio::time < horario_fim::time)
+            OR (NEW.horario_fim::time > horario_inicio::time AND NEW.horario_fim::time <= horario_fim::time)
+            OR (NEW.horario_inicio::time <= horario_inicio::time AND NEW.horario_fim::time >= horario_inicio::time)
+        )
+        AND (id_evento IS NULL OR id_evento != NEW.id_evento)
+        AND (NEW.data::date = data::date)
+    LIMIT 1;
+
+    IF FOUND THEN
+        IF (NEW.horario_inicio::time = conflicting_event.horario_fim::time
+            OR NEW.horario_fim::time = conflicting_event.horario_inicio::time) THEN
+            -- Permitir inserção se os horários são iguais
+            RETURN NEW;
+        ELSE
+            RAISE EXCEPTION 'Já existe um evento conflitante nesse horario';
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER evento_repetido BEFORE INSERT OR UPDATE ON Evento FOR EACH ROW EXECUTE FUNCTION evento_repetido();
+
+-- Trigger para não deixar reservar um horário que ja esteja ocupado
+
+CREATE OR REPLACE FUNCTION agendamento_repetido() RETURNS TRIGGER AS $$
+DECLARE
+    conflicting_event RECORD;
+BEGIN
+    -- Verificar se existe algum agendamento conflitante
+    SELECT INTO conflicting_event
+        *
+    FROM agendamento
+    WHERE id_quadra = NEW.id_quadra
+        AND status = 'ATIVO'
+        AND (
+            (NEW.horario_inicio::time >= horario_inicio::time AND NEW.horario_inicio::time < horario_fim::time)
+            OR (NEW.horario_fim::time > horario_inicio::time AND NEW.horario_fim::time <= horario_fim::time)
+            OR (NEW.horario_inicio::time <= horario_inicio::time AND NEW.horario_fim::time >= horario_inicio::time)
+        )
+        AND (id_agendamento IS NULL OR id_agendamento != NEW.id_agendamento)
+        AND (NEW.data::date = data::date)
+    LIMIT 1;
+
+    IF FOUND THEN
+        IF (NEW.horario_inicio::time = conflicting_event.horario_fim::time
+            OR NEW.horario_fim::time = conflicting_event.horario_inicio::time) THEN
+            -- Permitir inserção se os horários são iguais
+            RETURN NEW;
+        ELSE
+            RAISE EXCEPTION 'Já existe um agendamento conflitante nessa quadra';
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER agendamento_repetido BEFORE INSERT OR UPDATE ON agendamento FOR EACH ROW EXECUTE FUNCTION agendamento_repetido();
+
+
+-- Cria a trigger para impedir a inserção de agendamentos por usuarios inativos
+CREATE OR REPLACE FUNCTION verificar_usuario_ativo() RETURNS TRIGGER AS $$
+BEGIN
+    IF (NEW.cpf IN (SELECT cpf FROM Usuario WHERE status = 'ATIVO')) THEN
+        RETURN NEW;
+    ELSE
+        RAISE EXCEPTION 'Apenas usuários ativos podem marcar agendamentos';
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER verificar_usuario_ativo BEFORE INSERT OR UPDATE ON Agendamento FOR EACH ROW EXECUTE FUNCTION verificar_usuario_ativo();
+
+-- Cria a trigger antes de inserir um evento
+
+CREATE OR REPLACE FUNCTION verificar_horarios() RETURNS TRIGGER AS
+$$
+BEGIN
+    IF (NEW.horario_inicio::time + INTERVAL '1 hour' > NEW.horario_fim::time) THEN
+        RAISE EXCEPTION 'O horário final deve ser pelo menos uma hora após o horário de início.';
+    END IF;
+    
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+--Para agendamento
+CREATE TRIGGER trigger_verificar_horarios
+BEFORE INSERT OR UPDATE ON Agendamento
+FOR EACH ROW
+EXECUTE FUNCTION verificar_horarios();
+-- Para Eventos
+CREATE TRIGGER trigger_verificar_horarios
+BEFORE INSERT OR UPDATE ON Evento
+FOR EACH ROW
+EXECUTE FUNCTION verificar_horarios();
+
+--Funcão para atualizar bolsista quando 
+CREATE OR REPLACE FUNCTION atualizar_bolsista()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (NEW.funcao ILIKE 'aluno') THEN
+        DELETE FROM Bolsista WHERE cpf = NEW.cpf;
+    ELSIF (NEW.funcao ILIKE 'bolsista') THEN
+        IF NOT EXISTS (SELECT 1 FROM Bolsista WHERE cpf = NEW.cpf) THEN
+            INSERT INTO Bolsista (cpf, pnome, unome, email, senha, status, funcao)
+            VALUES (NEW.cpf, NEW.pnome, NEW.unome, NEW.email, NEW.senha, NEW.status, NEW.funcao);
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_atualizar_bolsista
+AFTER INSERT OR UPDATE OF funcao ON Usuario
+FOR EACH ROW
+EXECUTE FUNCTION atualizar_bolsista();
+

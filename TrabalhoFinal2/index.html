@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teste de Requisições HTTP</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h1>Bem-vindo, <span id="nome-usuario"></span>!</h1>
+  <p>Email: <span id="email-usuario"></span></p>
+  <p>Tipo de usuario: <span id="tipo"></span></p>
+
+  <h1>Teste de Requisições HTTP</h1>
+
+  <button onclick="selecionarUsuario()">Selecionar Usuário</button>
+  <button onclick="adicionarUsuario()">Adicionar Usuário</button>
+  <button onclick="atualizarUsuario()">Atualizar Usuário</button>
+  <button onclick="deletarUsuario()">Deletar Usuário</button>
+  <button onclick="selecionarUsuarios()">Selecionar Usuários</button>
+
+  <h2>Testes de Requisições para Bolsistas</h2>
+  
+  <button onclick="selecionarBolsista()">Selecionar Bolsista</button>
+  <button onclick="adicionarBolsista()">Adicionar Bolsista</button>
+  <button onclick="atualizarBolsista()">Atualizar Bolsista</button>
+  <button onclick="deletarBolsista()">Deletar Bolsista</button>
+  <button onclick="selecionarBolsistas()">Selecionar Bolsistas</button>
+
+  <h2>Encerrar Sessão</h2>
+
+  <button onclick="encerrarSessao()">Logout</button>
+  
+  <script>
+    function checkLogin() {
+    const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+    const isBolsista = sessionStorage.getItem('isBolsista');
+    const isAdmin = sessionStorage.getItem('isAdmin');
+
+
+    if (usuario !== null) {
+      // O usuário está logado, você pode usar as informações do usuário como necessário
+      console.log('Usuário logado:', usuario);
+      document.getElementById('nome-usuario').textContent = usuario.pnome + usuario.unome;
+      document.getElementById('email-usuario').textContent = usuario.email;
+      // if (isBolsista){
+      //   document.getElementById('tipo').textContent = 'Bolsista';
+      // }else{
+      //   document.getElementById('tipo').textContent = usuario.funcao;
+      // }
+      if (isAdmin){
+        document.getElementById('tipo').textContent = 'Admin';
+      }else{
+        document.getElementById('tipo').textContent = usuario.funcao;
+      }
+      console.log(isAdmin)
+      console.log(isBolsista)
+
+      
+    } else {
+      // O usuário não está logado, redireciona para a página de login
+      window.location.href = 'login.html';
+    }
+  }
+
+  // Chama a função checkLogin ao carregar a página
+  window.addEventListener('load', checkLogin);
+
+    function selecionarUsuario() {
+      var cpf = "11093720948";
+
+      $.ajax({
+        url: "http://localhost:8080/api/usuario/" + cpf,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          console.log("Usuário selecionado:", response);
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao selecionar usuário:", xhr.status);
+        }
+      });
+    }
+
+    function adicionarUsuario() {
+      var usuario = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "ativo",
+        funcao: "aluno"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/usuario",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(usuario),
+        success: function(response) {
+          console.log("Usuário adicionado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao adicionar usuário:", xhr.status);
+        }
+      });
+    }
+
+    function atualizarUsuario() {
+      var usuario = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "inativo",
+        funcao: "aluno"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/usuario",
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(usuario),
+        success: function(response) {
+          console.log("Usuário atualizado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao atualizar usuário:", xhr.status);
+        }
+      });
+    }
+
+    function deletarUsuario() {
+      var usuario = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "inativo",
+        funcao: "aluno"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/usuario",
+        type: "DELETE",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(usuario),
+        success: function(response) {
+          console.log("Usuário deletado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao deletar usuário:", xhr.status);
+        }
+      });
+    }
+
+    function selecionarUsuarios() {
+      $.ajax({
+        url: "http://localhost:8080/api/usuario",
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          console.log("Usuários selecionados:", response);
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao selecionar usuários:", xhr.status);
+        }
+      });
+    }
+    function selecionarBolsista() {
+      var cpf = "11093720948";
+
+      $.ajax({
+        url: "http://localhost:8080/api/bolsista/" + cpf,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          console.log("Bolsista selecionado:", response);
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao selecionar bolsista:", xhr.status);
+        }
+      });
+    }
+
+    function adicionarBolsista() {
+      var bolsista = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "ativo",
+        funcao: "bolsista",
+        id_bolsista: 1
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/bolsista",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(bolsista),
+        success: function(response) {
+          console.log("Bolsista adicionado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao adicionar bolsista:", xhr.status);
+        }
+      });
+    }
+
+    function atualizarBolsista() {
+      var bolsista = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "inativo",
+        funcao: "bolsista"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/bolsista",
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(bolsista),
+        success: function(response) {
+          console.log("Bolsista atualizado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao atualizar bolsista:", xhr.status);
+        }
+      });
+    }
+
+    function deletarBolsista() {
+      var bolsista = {
+        cpf: "11093720948",
+        pnome: "John",
+        unome: "Doe",
+        email: "johndoe@example.com",
+        senha: "senha123",
+        status: "inativo",
+        funcao: "bolsista"
+      };
+
+      $.ajax({
+        url: "http://localhost:8080/api/bolsista",
+        type: "DELETE",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(bolsista),
+        success: function(response) {
+          console.log("Bolsista deletado com sucesso!");
+        },
+        error: function(xhr, status, error) {
+          console.error("Erro ao deletar bolsista:", xhr.status);
+        }
+      });
+    }
+    function encerrarSessao(){
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    }
+
+  </script>
+</body>
+</html>

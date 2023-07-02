@@ -1,0 +1,130 @@
+CREATE TABLE Usuario(
+	cpf char(11) PRIMARY KEY,
+	pnome varchar(50),
+	unome varchar(50),
+	email varchar(100),
+	senha varchar(100),
+	status varchar(20),
+	funcao varchar(50)	
+);
+CREATE TABLE Bolsista(
+	cpf char(11) PRIMARY KEY,
+	pnome varchar(50),
+	unome varchar(50),
+	email varchar(100),
+	senha varchar(100),
+	status varchar(20),
+	funcao varchar(50),
+	id_bolsista serial not null,
+	FOREIGN KEY (cpf) REFERENCES Usuario (cpf) ON DELETE CASCADE
+	
+);
+CREATE TABLE Admin(
+	cpf char(11) PRIMARY KEY,
+	pnome varchar(50),
+	unome varchar(50),
+	email varchar(100),
+	senha varchar(100),
+	status varchar(20),
+	funcao varchar(50),
+	id_admin serial not null,	
+	FOREIGN KEY (cpf) REFERENCES Usuario (cpf) ON DELETE CASCADE
+);
+
+CREATE TABLE Bloco(
+	id_bloco serial not null PRIMARY KEY,
+	nome varchar(100),
+	descricao varchar(100)	
+);
+
+CREATE TABLE Quadra(
+	id_quadra serial not null PRIMARY KEY,
+	modalidade varchar(100),
+	descricao varchar(100),
+	id_bloco int,
+	FOREIGN KEY (id_bloco) REFERENCES Bloco (id_bloco) match simple
+	on update cascade on delete set null
+);
+CREATE TABLE Agendamento(
+	id_agendamento serial not null PRIMARY KEY,
+	horario_inicio varchar(8),
+	horario_fim varchar(8),
+	data varchar(10),
+	status varchar(50),
+	cpf char(11),
+	id_quadra int,
+	FOREIGN KEY (cpf) REFERENCES Usuario (cpf) match simple
+	on update cascade on delete set null,
+	FOREIGN KEY (id_quadra) REFERENCES Quadra(id_quadra) match simple
+	on update cascade on delete set null
+);
+CREATE TABLE Evento(
+	id_evento serial not null PRIMARY KEY,
+	data varchar(10),
+	horario_inicio varchar(8),
+	horario_fim varchar(8),
+	status varchar(50),
+	nome varchar(100),
+	cpf char(11),
+	FOREIGN KEY (cpf) REFERENCES Admin (cpf) match simple
+	on update cascade on delete set null
+);
+CREATE TABLE Equipamento(
+	id_equipamento serial not null PRIMARY KEY,
+	tipo varchar(50),
+	descricao varchar(100)
+);
+CREATE TABLE Reserva(
+	id_reserva serial not null PRIMARY KEY,
+	id_agendamento int,
+	id_equipamento int,
+	quantidade_equip int,
+	FOREIGN KEY (id_agendamento) REFERENCES Agendamento,
+	FOREIGN KEY (id_equipamento) REFERENCES Equipamento
+);
+CREATE TABLE QuadraEvento(
+	id_evento int,
+	id_quadra int,
+	FOREIGN KEY (id_evento) REFERENCES Evento (id_evento) match simple
+	on update cascade on delete set null,
+	FOREIGN KEY (id_quadra) REFERENCES Quadra (id_quadra) match simple
+	on update cascade on delete set null
+);
+
+CREATE SEQUENCE bolsista_id_seq;
+
+SELECT setval('bolsista_id_seq', COALESCE((SELECT MAX(id_bolsista) FROM Bolsista), 0) + 1, false);
+
+CREATE SEQUENCE admin_id_seq;
+
+SELECT setval('admin_id_seq', COALESCE((SELECT MAX(id_admin) FROM Admin), 0) + 1, false);
+
+
+CREATE SEQUENCE bloco_id_seq;
+
+SELECT setval('bloco_id_seq', COALESCE((SELECT MAX(id_bloco) FROM Bloco), 0) + 1, false);
+
+CREATE SEQUENCE quadra_id_seq;
+
+SELECT setval('quadra_id_seq', COALESCE((SELECT MAX(id_quadra) FROM Quadra), 0) + 1, false);
+
+CREATE SEQUENCE agendamento_id_seq;
+
+SELECT setval('agendamento_id_seq', COALESCE((SELECT MAX(id_agendamento) FROM Agendamento), 0) + 1, false);
+
+CREATE SEQUENCE equipamento_id_seq;
+
+SELECT setval('equipamento_id_seq', COALESCE((SELECT MAX(id_equipamento) FROM Equipamento), 0) + 1, false);
+
+CREATE SEQUENCE evento_id_seq;
+
+SELECT setval('evento_id_seq', COALESCE((SELECT MAX(id_evento) FROM Evento), 0) + 1, false);
+
+
+CREATE SEQUENCE reserva_id_seq;
+
+SELECT setval('reserva_id_seq', COALESCE((SELECT MAX(id_reserva) FROM Reserva), 0) + 1, false);
+
+ALTER TABLE QuadraEvento
+ADD CONSTRAINT UQ_QuadraEvento UNIQUE (id_evento, id_quadra);
+
